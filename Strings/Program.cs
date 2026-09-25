@@ -136,6 +136,23 @@ namespace Strings
             Console.WriteLine("Результат соединения частей строки: ");
             Console.WriteLine(whole);
             Console.WriteLine();
+
+            Console.WriteLine("\n====================Обрезка_и_заполнение_строк====================");
+            string strTest = "тест";
+            Console.WriteLine("Исходная строка: " + strTest);
+            strTest = strTest.PadLeft(10);
+            Console.WriteLine("|" + strTest + "|");
+            strTest = strTest.PadRight(20);
+            Console.WriteLine("|" + strTest + "|");
+            strTest = strTest.Trim();
+            Console.WriteLine("|" + strTest + "|");
+            strTest = strTest.PadLeft(10, '#');
+            Console.WriteLine("|" + strTest + "|");
+            strTest = strTest.PadRight(20, '#');
+            Console.WriteLine("|" + strTest + "|");
+            strTest = strTest.Trim('#');
+            Console.WriteLine("|" + strTest + "|");
+            Console.WriteLine();
         }
     }
 
