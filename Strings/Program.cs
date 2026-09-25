@@ -6,7 +6,7 @@ namespace Strings
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("====================Создание_строк====================");
+            Console.WriteLine("\n====================Создание_строк====================");
             // 1-й способ
             string str1 = "строка в C#";
 
@@ -19,12 +19,12 @@ namespace Strings
             Console.WriteLine(str1[10]);
             Console.WriteLine(str2[2]);
 
-            Console.WriteLine("====================Свойство_Length====================");
+            Console.WriteLine("\n====================Свойство_Length====================");
             string strUp, strLow;
             Console.WriteLine($"Длина строки 1: {str1.Length}");
             Console.WriteLine($"Длина строки 2: {str2.Length}");
 
-            Console.WriteLine("====================Сравнение_строк====================");
+            Console.WriteLine("\n====================Сравнение_строк====================");
             if (str1 == str2)
             {
                 Console.WriteLine("str1 == str2");
@@ -37,7 +37,7 @@ namespace Strings
             Console.WriteLine(strUp);
             Console.WriteLine(strLow);
 
-            Console.WriteLine("====================Использование_строк_в_switch====================");
+            Console.WriteLine("\n====================Использование_строк_в_switch====================");
             string[] week = { "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday" };
             foreach(string str in week)
             {
@@ -53,8 +53,7 @@ namespace Strings
                         break;
                 }
             }
-            Console.WriteLine();
-            Console.WriteLine("====================Сравнение_строк====================");
+            Console.WriteLine("\n====================Сравнение_строк====================");
             string str3 = "alpha";
             string str4 = "Alpha";
             string str5 = "Beta";
@@ -97,8 +96,55 @@ namespace Strings
                 Console.Write(str3 + " равно " + str4);
             Console.WriteLine();
 
-            Console.WriteLine("====================Сцепление_строк====================");
+            Console.WriteLine("\n====================Сцепление_строк====================");
+            string resultStr = String.Concat("значение равно " + 13);
+            Console.WriteLine("Результат: " + resultStr);
+            resultStr = String.Concat("привет ", 88, " ", 20.0, " ", true, " " + 12.345M);
+            Console.WriteLine("Результат: " + resultStr);
+            NewClass nc = new NewClass();
+            resultStr = String.Concat(nc, " текущий счёт равен ", NewClass.Count);
+            Console.WriteLine("Результат: " + resultStr);
+            Console.WriteLine();
 
+            Console.WriteLine("\n====================Поиск_в_строке====================");
+            string str8 = "С# обладает эффективными средствами обработки строк.";
+            int index;
+            Console.WriteLine("Строка str8: " + str8);
+            index = str8.IndexOf('о');
+            Console.WriteLine("Индекс первого вхождения символа 'o': " + index);
+            index = str8.LastIndexOf('о');
+            Console.WriteLine("Индекс последнего вхождения символа 'o': " + index);
+            index = str8.IndexOf("ми");
+            Console.WriteLine("Индекс первого вхождения подстроки 'ми': " + index);
+            index = str8.LastIndexOf('о');
+            Console.WriteLine("Индекс последнего вхождения подстроки 'ми': " + index);
+            char[] chars = { 'а', 'б', 'в' };
+            index = str8.IndexOfAny(chars);
+            Console.WriteLine("Индекс первого вхождения символов 'а','б' или 'в': " + index);
+            Console.WriteLine();
+
+            Console.WriteLine("\n====================Разделение_и_соединение_строк====================");
+            string str9 = "Ты на суше, я - на море.";
+            char[] seps = { ' ', '.', ',' };
+            string[] parts = str9.Split(seps);
+            Console.WriteLine("Результат разделения строки: ");
+            for (int i = 0; i < parts.Length; i++)
+            {
+                Console.WriteLine(parts[i]);
+            }
+            string whole = String.Join(" | ", parts);
+            Console.WriteLine("Результат соединения частей строки: ");
+            Console.WriteLine(whole);
+            Console.WriteLine();
+        }
+    }
+
+    class NewClass
+    {
+        public static int Count = 0;
+        public NewClass()
+        {
+            Count++;
         }
     }
 }
