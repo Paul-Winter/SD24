@@ -153,6 +153,61 @@ namespace Strings
             strTest = strTest.Trim('#');
             Console.WriteLine("|" + strTest + "|");
             Console.WriteLine();
+
+            Console.WriteLine("\n====================Спецификаторы_числового_формата====================");
+            double d1 = 17688.65849;
+            double d2 = 0.15;
+            int x1 = 21;
+            Console.WriteLine("{0:F2}", d1);
+            Console.WriteLine("{0:N5}", d1);
+            Console.WriteLine("{0:e}", d1);
+            Console.WriteLine("{0:r}", d1);
+            Console.WriteLine("{0:p}", d2);
+            Console.WriteLine("{0:X}", x1);
+            Console.WriteLine("{0:D12}", x1);
+            Console.WriteLine("{0:C}", 189.99);
+            Console.WriteLine("{0:F2} {0:F3} {0:e}", d1);
+            Console.WriteLine("{2:d} {0:d} {1:d}", 1, 2, 3);
+
+            Console.WriteLine("\n");
+            int summ = 0;
+            int prod = 1;
+            string str10;
+            for (int i = 1; i <= 10; i++)
+            {
+                summ += i;
+                prod *= i;
+                str10 = String.Format("Сумма: {0,3:D}\tПроизведение: {1,8:D}", summ, prod);
+                Console.WriteLine(str10);
+            }
+            
+            Console.WriteLine("\n");
+            Console.WriteLine("{0:00##.#00}", 21.3);
+            Console.WriteLine("{0:#,###.#}", 3421.3);
+
+            Console.WriteLine("\n====================Спецификаторы_формата_даты_и_времени====================");
+            DateTime dt = DateTime.Now;
+            Console.WriteLine("Формат d: {0:d}", dt);
+            Console.WriteLine("Формат D: {0:D}", dt);
+            Console.WriteLine("Формат t: {0:t}", dt);
+            Console.WriteLine("Формат T: {0:T}", dt);
+            Console.WriteLine("Формат f: {0:f}", dt);
+            Console.WriteLine("Формат F: {0:F}", dt);
+            Console.WriteLine("Формат g: {0:g}", dt);
+            Console.WriteLine("Формат G: {0:G}", dt);
+            Console.WriteLine("Формат m: {0:m}", dt);
+            Console.WriteLine("Формат M: {0:M}", dt);
+            Console.WriteLine("Формат o: {0:o}", dt);
+            Console.WriteLine("Формат O: {0:O}", dt);
+            Console.WriteLine("Формат r: {0:r}", dt);
+            Console.WriteLine("Формат R: {0:R}", dt);
+            Console.WriteLine("Формат s: {0:s}", dt);
+            Console.WriteLine("Формат u: {0:u}", dt);
+            Console.WriteLine("Формат U: {0:U}", dt);
+            Console.WriteLine("Формат y: {0:y}", dt);
+            Console.WriteLine("Формат Y: {0:Y}", dt);
+            Console.WriteLine("\n");
+
         }
     }
 
