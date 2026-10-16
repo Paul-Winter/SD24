@@ -5,8 +5,8 @@
     /// </summary>
     public class Dialog
     {
-        private string name;
-        private int age;
+        private string name = "";
+        private int age = 0;
         /// <summary>
         /// Приветствует пользователя
         /// </summary>
