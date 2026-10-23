@@ -106,6 +106,21 @@ namespace Unsafe
             {
                 Console.WriteLine($"У переменной отсутствует значение");
             }
+
+            // обнуляемый_объект ?? значение_по_умолчанию;
+            double? balance = 123.456;
+            double newBalance;
+            newBalance = balance ?? GetZeroBalance();
+            Console.WriteLine($"Старое значение: {newBalance}");
+            balance = null;
+            newBalance = balance ?? 0.0;
+            Console.WriteLine($"Новое значение: {newBalance}");
+
+        }
+        static double GetZeroBalance()
+        {
+            Console.WriteLine("В методе GetZeroBalance(): ");
+            return 0.0;
         }
     }
     class Test
