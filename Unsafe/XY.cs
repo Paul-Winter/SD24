@@ -8,5 +8,6 @@ namespace Unsafe
     {
         private int x;
         private int y;
+        partial void Show();
     }
 }

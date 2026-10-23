@@ -8,6 +8,10 @@ namespace Unsafe
     {
         public int X { get; set; }
         public int Y { get; set; }
+        partial void Show()
+        {
+            Console.WriteLine($"X = {X}; Y = {Y};");
+        }
     }
     internal class Class1
     {
