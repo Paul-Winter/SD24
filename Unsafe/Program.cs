@@ -1,4 +1,6 @@
-﻿namespace Unsafe
+﻿using System.ComponentModel;
+
+namespace Unsafe
 {
     internal class Program
     {
@@ -33,6 +35,13 @@
                 *p1 = 33;
                 Console.WriteLine($"Новое значение переменной test.num: {*p1}");
             }
+
+            MyStruct ms = new MyStruct();
+            MyStruct* p2;
+            p2 = &ms;
+            p2->x = 13;
+            p2->y = 24;
+            Console.WriteLine($"Сумма равна: {p2->Sum()}");
         }
     }
     class Test
@@ -41,6 +50,15 @@
         public Test(int n)
         {
             num = n;
+        }
+    }
+    struct MyStruct
+    {
+        public int x;
+        public int y;
+        public int Sum()
+        {
+            return x + y;
         }
     }
 }
