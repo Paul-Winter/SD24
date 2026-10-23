@@ -18,7 +18,13 @@
             // * обращается к значению переменной по адресу
             Console.WriteLine($"*p = {*p}");
 
+            int count = 99;
+            int* pointer;
 
+            pointer = &count;
+            Console.WriteLine($"Исходное значение переменной count: {count}");
+            *pointer = 12;
+            Console.WriteLine($"Новое значение переменной count: {count}");
         }
     }
 }
