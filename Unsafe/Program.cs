@@ -119,6 +119,19 @@ namespace Unsafe
             Console.WriteLine("\n________________________________________Частичные_типы________________________________________\n");
             XY xy = new XY(9, 12);
             Console.WriteLine($"xy.X = {xy.X}; xy.Y = {xy.Y}");
+
+            Console.WriteLine("\n________________________________________Динамический_тип________________________________________\n");
+            dynamic str;
+            dynamic value;
+            str = "this is a string";
+            value = 33;
+            Console.WriteLine($"Переменная str содержит: {str}");
+            Console.WriteLine($"Переменная value содержит: {value}");
+
+            string str2 = str.ToUpper(CultureInfo.CurrentCulture);
+            int a = value * 2;
+            Console.WriteLine($"Переменная str2 содержит: {str2}");
+            Console.WriteLine($"Переменная a содержит: {a}");
         }
         static double GetZeroBalance()
         {
