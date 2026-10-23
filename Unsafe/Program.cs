@@ -64,6 +64,17 @@ namespace Unsafe
             px = &x;
             q = &px;
             Console.WriteLine($"х = {**q}");
+
+            // sizeof(тип)
+            // тип *p = stackalloc тип[размер]
+            int* ptrs = stackalloc int[3];
+            ptrs[0] = 1;
+            ptrs[1] = 2;
+            ptrs[2] = 3;
+            for (int i = 0; i < 3; i++)
+            {
+                Console.WriteLine($"ptrs{i} = {ptrs[i]}");
+            }
         }
     }
     class Test
