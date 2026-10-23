@@ -25,6 +25,22 @@
             Console.WriteLine($"Исходное значение переменной count: {count}");
             *pointer = 12;
             Console.WriteLine($"Новое значение переменной count: {count}");
+
+            Test test = new Test(42);
+            fixed (int* p1 = &test.num)
+            {
+                Console.WriteLine($"Исходное значение переменной test.num: {*p1}");
+                *p1 = 33;
+                Console.WriteLine($"Новое значение переменной test.num: {*p1}");
+            }
+        }
+    }
+    class Test
+    {
+        public int num;
+        public Test(int n)
+        {
+            num = n;
         }
     }
 }
