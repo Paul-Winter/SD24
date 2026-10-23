@@ -6,7 +6,9 @@ namespace Unsafe
     internal class Program
     {
         unsafe static void Main(string[] args)
-        {            
+        {
+            Console.WriteLine("\n________________________________________Указатели________________________________________\n");
+
             // объявление указателей:
             // тип* имя_переменной;
             int* ip;
@@ -74,6 +76,35 @@ namespace Unsafe
             for (int i = 0; i < 3; i++)
             {
                 Console.WriteLine($"ptrs{i} = {ptrs[i]}");
+            }
+
+            Console.WriteLine("\n________________________________________Обнуляемые_типы________________________________________\n");
+
+            // 1 вариант
+            System.Nullable<int> i1;
+            System.Nullable<float> f1;
+
+            // 2 вариант
+            int? i2;
+            float? f2;
+
+            int? count2 = null;
+            if (count2.HasValue)
+            {
+                Console.WriteLine($"Переменная имеет значение: {count2.Value}");
+            }
+            else
+            {
+                Console.WriteLine($"У переменной отсутствует значение");
+            }
+            count2 = 99;
+            if (count2.HasValue)
+            {
+                Console.WriteLine($"Переменная имеет значение: {count2.Value}");
+            }
+            else
+            {
+                Console.WriteLine($"У переменной отсутствует значение");
             }
         }
     }
