@@ -116,11 +116,22 @@ namespace Unsafe
             newBalance = balance ?? 0.0;
             Console.WriteLine($"Новое значение: {newBalance}");
 
+            Console.WriteLine("\n________________________________________Частичные_типы________________________________________\n");
+            XY xy = new XY(9, 12);
+            Console.WriteLine($"xy.X = {xy.X}; xy.Y = {xy.Y}");
         }
         static double GetZeroBalance()
         {
             Console.WriteLine("В методе GetZeroBalance(): ");
             return 0.0;
+        }
+    }
+    partial class XY
+    {
+        public XY(int x, int y)
+        {
+            X = x;
+            Y = y;
         }
     }
     class Test
