@@ -5,6 +5,7 @@ namespace Unsafe
 {
     internal class Program
     {
+        public static readonly int SIZE = 10;
         unsafe static void Main(string[] args)
         {
             Console.WriteLine("\n________________________________________Указатели________________________________________\n");
@@ -132,12 +133,38 @@ namespace Unsafe
             int a = value * 2;
             Console.WriteLine($"Переменная str2 содержит: {str2}");
             Console.WriteLine($"Переменная a содержит: {a}");
+
+            Console.WriteLine("\n________________________________________Разные_ключевые_слова________________________________________\n");
+            int[] mass1 = new int[Program.SIZE];
+            int[] mass2 = new int[Program.SIZE];
+            for (int i = 0; i < mass1.Length; i++)
+            {
+                mass1[i] = i;
+            }
+            foreach (int i in mass1)
+            {
+                Console.Write($"{i}, ");
+            }
+            Console.WriteLine();
+            for (int i = Program.SIZE - 1, j = 0; i > 0; i--, j++)
+            {
+                mass2[j] = mass1[i];
+            }
+            foreach (int i in mass2)
+            {
+                Console.Write($"{i}, ");
+            }
+            // Program.SIZE = 100; - ERROR!!!
         }
         static double GetZeroBalance()
         {
             Console.WriteLine("В методе GetZeroBalance(): ");
             return 0.0;
         }
+        const int i2 = 3;
+        volatile int i3 = 11; // можно изменять двумя и более параллельно выполняющимися потоками
+
+        // extern возвращаемый_тип имя_метода(список_аргументов); 
     }
     partial class XY
     {
