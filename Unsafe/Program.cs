@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Globalization;
 
 namespace Unsafe
 {
@@ -56,6 +57,13 @@ namespace Unsafe
                 pd++;
                 x += x;
             }
+
+            int* px;
+            int** q;
+            x = 10;
+            px = &x;
+            q = &px;
+            Console.WriteLine($"х = {**q}");
         }
     }
     class Test
