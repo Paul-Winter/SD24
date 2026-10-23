@@ -10,7 +10,7 @@ namespace Unsafe
             // тип* имя_переменной;
             int* ip;
             float* fp;
-            int* x, y;
+            //int* x, y;
 
             // & возвращает адрес
             int* p;
@@ -42,6 +42,20 @@ namespace Unsafe
             p2->x = 13;
             p2->y = 24;
             Console.WriteLine($"Сумма равна: {p2->Sum()}");
+
+            int x = 1;
+            int y;
+            double d;
+            int* py = &y;
+            double* pd = &d;
+            Console.WriteLine(" int\t\tdouble\n");
+            for (int i = 0; i < 10; i++)
+            {
+                Console.WriteLine((uint)py + "     " + (uint)pd);
+                py++;
+                pd++;
+                x += x;
+            }
         }
     }
     class Test
