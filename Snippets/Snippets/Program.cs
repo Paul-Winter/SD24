@@ -52,7 +52,7 @@
 
             }
 
-            // do + while
+            // do + tab
             do
             {
 
@@ -64,6 +64,10 @@
             {
                 default:
             }
+
+
+            // cr + tab
+            Console.ReadLine("");
 
 
         }
