@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="all cups/all cups.csproj" />
   <Project Path="enot_guru/enot_guru.csproj" Id="78f113dd-3f04-4ce1-9223-d7c9c000a6d1" />
+  <Project Path="Repiticii/Repiticii.csproj" Id="aecfd83b-1440-4949-80a3-6be77801098d" />
   <Project Path="sdelat_chutnim/sdelat_chutnim.csproj" Id="1a1e48c9-5b34-46c1-904d-d388f7fdd586" />
 </Solution>
