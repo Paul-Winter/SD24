@@ -1,0 +1,9 @@
+<Solution>
+  <Project Path="all cups/all cups.csproj" />
+  <Project Path="enoti/enoti.csproj" Id="c88de8fc-305e-4947-a650-e9141ec9aebe" />
+  <Project Path="enot_guru/enot_guru.csproj" Id="78f113dd-3f04-4ce1-9223-d7c9c000a6d1" />
+  <Project Path="iomkost_posledovatelnosti/iomkost_posledovatelnosti.csproj" Id="567dd561-c5c2-4871-a330-27e44499f73a" />
+  <Project Path="ProgrammaBalla/ProgrammaBalla.csproj" Id="79c4b894-0d75-4945-914f-e6956130ef3e" />
+  <Project Path="Repiticii/Repiticii.csproj" Id="aecfd83b-1440-4949-80a3-6be77801098d" />
+  <Project Path="sdelat_chutnim/sdelat_chutnim.csproj" Id="1a1e48c9-5b34-46c1-904d-d388f7fdd586" />
+</Solution>
