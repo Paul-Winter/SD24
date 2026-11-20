@@ -1,0 +1,7 @@
+C:\Users\Димон\source\repos\PCResourceManager\PCResourceManager\obj\Debug\net10.0-windows\PCResourceManager.MainForm.resources
+C:\Users\Димон\source\repos\PCResourceManager\PCResourceManager\obj\Debug\net10.0-windows\PCResourceManager.csproj.GenerateResource.cache
+C:\Users\Димон\source\repos\PCResourceManager\PCResourceManager\obj\Debug\net10.0-windows\PCResourceManager.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Димон\source\repos\PCResourceManager\PCResourceManager\obj\Debug\net10.0-windows\PCResourceManager.AssemblyInfoInputs.cache
+C:\Users\Димон\source\repos\PCResourceManager\PCResourceManager\obj\Debug\net10.0-windows\PCResourceManager.AssemblyInfo.cs
+C:\Users\Димон\source\repos\PCResourceManager\PCResourceManager\obj\Debug\net10.0-windows\PCResourceManager.csproj.CoreCompileInputs.cache
+C:\Users\Димон\source\repos\PCResourceManager\PCResourceManager\obj\Debug\net10.0-windows\PCResourceManager.csproj.AssemblyReference.cache
