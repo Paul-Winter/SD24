@@ -1,0 +1,17 @@
+C:\Users\User\source\repos\ManagerHelper\ManagerHelper\bin\Debug\net10.0-windows\ManagerHelper.exe
+C:\Users\User\source\repos\ManagerHelper\ManagerHelper\bin\Debug\net10.0-windows\ManagerHelper.deps.json
+C:\Users\User\source\repos\ManagerHelper\ManagerHelper\bin\Debug\net10.0-windows\ManagerHelper.runtimeconfig.json
+C:\Users\User\source\repos\ManagerHelper\ManagerHelper\bin\Debug\net10.0-windows\ManagerHelper.dll
+C:\Users\User\source\repos\ManagerHelper\ManagerHelper\bin\Debug\net10.0-windows\ManagerHelper.pdb
+C:\Users\User\source\repos\ManagerHelper\ManagerHelper\obj\Debug\net10.0-windows\ManagerHelper.Form1.resources
+C:\Users\User\source\repos\ManagerHelper\ManagerHelper\obj\Debug\net10.0-windows\ManagerHelper.csproj.GenerateResource.cache
+C:\Users\User\source\repos\ManagerHelper\ManagerHelper\obj\Debug\net10.0-windows\ManagerHelper.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\source\repos\ManagerHelper\ManagerHelper\obj\Debug\net10.0-windows\ManagerHelper.AssemblyInfoInputs.cache
+C:\Users\User\source\repos\ManagerHelper\ManagerHelper\obj\Debug\net10.0-windows\ManagerHelper.AssemblyInfo.cs
+C:\Users\User\source\repos\ManagerHelper\ManagerHelper\obj\Debug\net10.0-windows\ManagerHelper.csproj.CoreCompileInputs.cache
+C:\Users\User\source\repos\ManagerHelper\ManagerHelper\obj\Debug\net10.0-windows\ManagerHelper.dll
+C:\Users\User\source\repos\ManagerHelper\ManagerHelper\obj\Debug\net10.0-windows\refint\ManagerHelper.dll
+C:\Users\User\source\repos\ManagerHelper\ManagerHelper\obj\Debug\net10.0-windows\ManagerHelper.pdb
+C:\Users\User\source\repos\ManagerHelper\ManagerHelper\obj\Debug\net10.0-windows\ManagerHelper.genruntimeconfig.cache
+C:\Users\User\source\repos\ManagerHelper\ManagerHelper\obj\Debug\net10.0-windows\ref\ManagerHelper.dll
+C:\Users\User\source\repos\ManagerHelper\ManagerHelper\obj\Debug\net10.0-windows\ManagerH.3B4D4F46.Up2Date
