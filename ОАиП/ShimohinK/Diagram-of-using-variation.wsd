@@ -1,0 +1,80 @@
+@startuml UseCase_CollegeSchedule
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+skinparam usecase {
+  BackgroundColor #FEFECE
+  BorderColor #A80036
+  ArrowColor #A80036
+}
+
+actor "Администратор" as Admin
+
+rectangle "Менеджер расписаний колледжа" {
+
+  package "Аудитории" {
+    usecase "Управлять аудиториями\n(CRUD)" as UC_Aud_CRUD
+    usecase "Проверять занятость\nаудитории" as UC_Aud_Occup
+    usecase "Контролировать вместимость\nи санитарные нормы" as UC_Aud_Cap
+  }
+
+  package "Преподаватели" {
+    usecase "Управлять преподавателями\n(CRUD)" as UC_Teach_CRUD
+    usecase "Учитывать доступность\n(отпуск/больничный/нерабочие дни)" as UC_Teach_Avail
+    usecase "Проверять конфликты\nпреподавателя" as UC_Teach_Conf
+  }
+
+  package "Группы и нагрузка" {
+    usecase "Управлять группами" as UC_Group_CRUD
+    usecase "Учитывать нагрузку групп" as UC_Group_Load
+    usecase "Отмечать зачёты и экзамены" as UC_Group_Exam
+  }
+
+  package "Расписание" {
+    usecase "Просматривать сетку расписания" as UC_Sched_View
+    usecase "Составлять/корректировать расписание\n(авто и вручную)" as UC_Sched_Edit
+    usecase "Проверять конфликты\n(группа/аудитория/преподаватель)" as UC_Sched_Conf
+    usecase "Учитывать праздники и выходные" as UC_Sched_Holiday
+    usecase "Отмечать статус пары\n(запланирована/проведена/отменена/перенесена)" as UC_Sched_Status
+    usecase "Добавлять неурочные мероприятия" as UC_Sched_Event
+    usecase "Экспортировать расписание\n(Excel/PDF)" as UC_Sched_Export
+  }
+
+  package "Интеграция с сайтом" {
+    usecase "Импортировать данные\nс сайта" as UC_Int_Import
+    usecase "Экспортировать данные\nна сайт" as UC_Int_Export
+  }
+
+  package "Системные" {
+    usecase "Вести журнал действий (аудит)" as UC_Audit
+    usecase "Резервное копирование/восстановление" as UC_Backup
+  }
+}
+
+Admin --> UC_Aud_CRUD
+Admin --> UC_Teach_CRUD
+Admin --> UC_Group_CRUD
+Admin --> UC_Sched_View
+Admin --> UC_Sched_Edit
+Admin --> UC_Sched_Export
+Admin --> UC_Int_Import
+Admin --> UC_Int_Export
+Admin --> UC_Audit
+Admin --> UC_Backup
+
+UC_Aud_CRUD ..> UC_Aud_Cap   : <<include>>
+UC_Group_CRUD ..> UC_Group_Load : <<include>>
+
+UC_Sched_Edit ..> UC_Sched_Conf    : <<include>>
+UC_Sched_Edit ..> UC_Aud_Occup     : <<include>>
+UC_Sched_Edit ..> UC_Aud_Cap       : <<include>>
+UC_Sched_Edit ..> UC_Teach_Conf    : <<include>>
+UC_Sched_Edit ..> UC_Teach_Avail   : <<include>>
+UC_Sched_Edit ..> UC_Group_Load    : <<include>>
+UC_Sched_Edit ..> UC_Sched_Holiday : <<include>>
+UC_Sched_Edit ..> UC_Group_Exam    : <<include>>
+
+UC_Sched_Status ..> UC_Sched_Edit : <<extend>>
+UC_Sched_Event  ..> UC_Sched_Edit : <<extend>>
+
+@enduml

@@ -1,0 +1,162 @@
+@startuml ClassDiagram_CollegeSchedule
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor #FEFECE
+  BorderColor #A80036
+  ArrowColor #A80036
+}
+skinparam packageStyle rectangle
+
+
+package "Пользователи и аудит" {
+  class User {
+    - id: int
+    - login: string
+    - passwordHash: string
+    - role: string
+  }
+
+  class AuditRecord {
+    - id: int
+    - timestamp: DateTime
+    - action: string
+    - entityType: string
+    - entityId: int
+    - details: string
+  }
+}
+
+
+package "Аудитории" {
+  class Classroom {
+    - id: int
+    - number: string
+    - building: string
+    - floor: int
+    - type: ClassroomType
+    - capacity: int
+    + isOccupied(date: DateTime, lessonNumber: int): bool
+    + checkCapacity(studentCount: int): bool
+  }
+
+  enum ClassroomType {
+    LECTURE
+    LABORATORY
+    GYM
+    OTHER
+  }
+}
+
+package "Преподаватели" {
+  class Teacher {
+    - id: int
+    - fullName: string
+    - position: string
+    - department: string
+    - avoidFirstLesson: bool
+    + isAvailable(date: DateTime, lessonNumber: int): bool
+    + getLoad(): double
+  }
+
+  class Unavailability {
+    - id: int
+    - startDate: Date
+    - endDate: Date
+    - reason: string
+  }
+}
+
+
+package "Группы и нагрузка" {
+  class Group {
+    - id: int
+    - name: string
+    - studentCount: int
+    - maxWeeklyLoad: int
+    + getCurrentWeeklyLoad(): int
+  }
+
+  class Discipline {
+    - id: int
+    - name: string
+    - type: DisciplineType
+    - totalHours: int
+    - assessmentType: AssessmentType
+  }
+
+  class GroupDisciplineLoad {
+    - id: int
+    - semester: int
+    - hoursPerWeek: int
+    - hoursTotal: int
+    - type: DisciplineType
+  }
+
+  enum DisciplineType {
+    LECTURE
+    PRACTICE
+    LAB
+  }
+
+  enum AssessmentType {
+    NONE
+    PASS
+    EXAM
+  }
+}
+
+package "Расписание" {
+  class Lesson {
+    - id: int
+    - dayOfWeek: DayOfWeek
+    - lessonNumber: int
+    - status: LessonStatus
+    - date: Date
+    + checkConflicts(): List<Conflict>
+  }
+
+  class Event {
+    - id: int
+    - name: string
+    - date: DateTime
+    - description: string
+    - type: EventType
+  }
+
+  class Holiday {
+    - id: int
+    - date: Date
+    - name: string
+  }
+
+  enum LessonStatus {
+    PLANNED
+    CONDUCTED
+    CANCELLED
+    MOVED
+  }
+
+  enum EventType {
+    CURATOR_HOUR
+    EXCURSION
+    OTHER
+  }
+}
+
+User "1" -- "*" AuditRecord : создаёт >
+
+Teacher "1" -- "*" Unavailability : имеет >
+Teacher "1" -- "*" Lesson : ведёт >
+Classroom "1" -- "*" Lesson : принимает >
+Group "1" -- "*" Lesson : посещает >
+Discipline "1" -- "*" Lesson : предмет >
+
+Group "1" -- "*" GroupDisciplineLoad : имеет >
+Discipline "1" -- "*" GroupDisciplineLoad : входит в >
+
+Teacher "1" -- "*" Event : участвует >
+Group "0..1" -- "*" Event : участвует >
+
+
+
+@enduml

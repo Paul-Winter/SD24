@@ -1,0 +1,157 @@
+@startuml ER_CollegeSchedule
+hide circle
+skinparam linetype ortho
+skinparam entity {
+  BackgroundColor #FEFECE
+  BorderColor #A80036
+}
+skinparam shadowing false
+skinparam defaultFontSize 11
+
+entity "users" as users {
+  * user_id : INTEGER <<PK>>
+  --
+  login : TEXT NOT NULL UNIQUE
+  password_hash : TEXT NOT NULL
+  role : TEXT NOT NULL
+}
+
+entity "audit_log" as audit_log {
+  * audit_id : INTEGER <<PK>>
+  --
+  user_id : INTEGER <<FK>>
+  timestamp : DATETIME NOT NULL
+  action : TEXT NOT NULL
+  entity_type : TEXT
+  entity_id : INTEGER
+  details : TEXT
+}
+
+entity "classrooms" as classrooms {
+  * classroom_id : INTEGER <<PK>>
+  --
+  number : TEXT NOT NULL
+  building : TEXT NOT NULL
+  floor : INTEGER
+  type : TEXT NOT NULL   ' lecture | laboratory | gym | other
+  capacity : INTEGER NOT NULL
+  UNIQUE (number, building)
+}
+
+entity "teachers" as teachers {
+  * teacher_id : INTEGER <<PK>>
+  --
+  full_name : TEXT NOT NULL
+  position : TEXT
+  department : TEXT
+  workload : REAL DEFAULT 0
+  avoid_first_lesson : BOOLEAN DEFAULT 0
+}
+
+entity "teacher_unavailability" as teacher_unavailability {
+  * unavailability_id : INTEGER <<PK>>
+  --
+  teacher_id : INTEGER <<FK>>
+  start_date : DATE NOT NULL
+  end_date : DATE NOT NULL
+  reason : TEXT           ' vacation | sick | day_off | other
+}
+
+entity "groups" as groups {
+  * group_id : INTEGER <<PK>>
+  --
+  name : TEXT NOT NULL UNIQUE
+  student_count : INTEGER NOT NULL
+  max_weekly_load : INTEGER DEFAULT 36
+}
+
+entity "disciplines" as disciplines {
+  * discipline_id : INTEGER <<PK>>
+  --
+  name : TEXT NOT NULL
+  type : TEXT NOT NULL              ' lecture | practice | lab
+  total_hours : INTEGER
+  assessment_type : TEXT NOT NULL   ' none | pass | exam
+}
+
+entity "group_discipline_load" as gdl {
+  * load_id : INTEGER <<PK>>
+  --
+  group_id : INTEGER <<FK>>
+  discipline_id : INTEGER <<FK>>
+  semester : INTEGER NOT NULL
+  hours_per_week : INTEGER
+  hours_total : INTEGER
+  lesson_type : TEXT
+  UNIQUE (group_id, discipline_id, semester)
+}
+
+entity "holidays" as holidays {
+  * holiday_id : INTEGER <<PK>>
+  --
+  date : DATE NOT NULL UNIQUE
+  name : TEXT NOT NULL
+}
+
+entity "lessons" as lessons {
+  * lesson_id : INTEGER <<PK>>
+  --
+  discipline_id : INTEGER <<FK>>
+  teacher_id : INTEGER <<FK>>
+  classroom_id : INTEGER <<FK>>
+  group_id : INTEGER <<FK>>
+  date : DATE NOT NULL
+  day_of_week : INTEGER NOT NULL   ' 1..7
+  lesson_number : INTEGER NOT NULL ' 1..6 (пара = 2 акад. часа)
+  status : TEXT NOT NULL           ' planned | conducted | cancelled | moved
+  UNIQUE (date, lesson_number, classroom_id)
+  UNIQUE (date, lesson_number, teacher_id)
+  UNIQUE (date, lesson_number, group_id)
+}
+
+entity "events" as events {
+  * event_id : INTEGER <<PK>>
+  --
+  name : TEXT NOT NULL
+  date : DATE NOT NULL
+  start_time : TIME
+  end_time : TIME
+  description : TEXT
+  type : TEXT NOT NULL   ' curator_hour | excursion | other
+}
+
+entity "event_teachers" as event_teachers {
+  * event_teacher_id : INTEGER <<PK>>
+  --
+  event_id : INTEGER <<FK>>
+  teacher_id : INTEGER <<FK>>
+  UNIQUE (event_id, teacher_id)
+}
+
+entity "event_groups" as event_groups {
+  * event_group_id : INTEGER <<PK>>
+  --
+  event_id : INTEGER <<FK>>
+  group_id : INTEGER <<FK>>
+  UNIQUE (event_id, group_id)
+}
+
+users ||--o{ audit_log
+
+teachers ||--o{ teacher_unavailability
+
+groups ||--o{ gdl
+disciplines ||--o{ gdl
+
+groups ||--o{ lessons
+disciplines ||--o{ lessons
+teachers ||--o{ lessons
+classrooms ||--o{ lessons
+
+events ||--o{ event_teachers
+teachers ||--o{ event_teachers
+
+events ||--o{ event_groups
+groups ||--o{ event_groups
+
+@enduml
