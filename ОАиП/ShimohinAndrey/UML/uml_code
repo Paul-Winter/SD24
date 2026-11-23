@@ -1,0 +1,169 @@
+@startuml PCResourceManager
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+enum FileCategory {
+  CanDelete
+  DoNotDelete
+  NeedsReview
+  System
+}
+
+package "Models" {
+  class FileInfoModel {
+    + string Name
+    + string FullPath
+    + long SizeBytes
+    + string FileType
+    + bool IsFolder
+    + DateTime LastModified
+    + FileCategory Category
+    + string FormattedSize
+  }
+
+  class ProcessInfoModel {
+    + int Id
+    + string Name
+    + double RamUsageMb
+    + double CpuUsage
+    + bool IsSystem
+    + bool IsProtected
+  }
+
+  class DiskInfoModel {
+    + string DriveLetter
+    + long TotalBytes
+    + long FreeBytes
+    + long UsedBytes
+    + double UsedPercent
+  }
+
+  class SystemSnapshot {
+    + double CpuLoad
+    + long RamUsedMb
+    + long RamTotalMb
+    + DateTime Timestamp
+    + List<DiskInfoModel> Disks
+    + List<ProcessInfoModel> Processes
+  }
+
+  class ProtectedItem {
+    + string Path
+    + bool IsFolder
+    + DateTime DateAdded
+  }
+
+  class AppSettings {
+    + int RefreshIntervalMs
+    + bool AutoScanEnabled
+    + bool NotificationsEnabled
+    + string Language
+    + List<string> ProtectedFolders
+    + List<string> Exceptions
+  }
+}
+
+package "Services" {
+  class SystemMonitorService {
+    + event EventHandler<SystemSnapshot> SnapshotUpdated
+    + void Start(int intervalMs)
+    + void Stop()
+    + SystemSnapshot GetSnapshot()
+  }
+
+  class DiskScanService {
+    + event EventHandler<int> ProgressChanged
+    + Task<List<FileInfoModel>> ScanAsync(string path)
+  }
+
+  class CleanupService {
+    + long CalculateTotalSize(List<FileInfoModel> items)
+    + Task<CleanupResult> CleanupAsync(List<FileInfoModel> items, bool toRecycleBin)
+  }
+
+  class ProtectionService {
+    + bool IsProtected(string path)
+    + void AddProtected(string path, bool isFolder)
+    + void RemoveProtected(string path)
+    + List<ProtectedItem> GetProtectedItems()
+  }
+
+  class ProcessService {
+    + List<ProcessInfoModel> GetProcesses()
+    + bool TerminateProcess(int id)
+  }
+
+  class SettingsService {
+    + AppSettings Load()
+    + void Save(AppSettings settings)
+  }
+}
+
+package "Forms (Windows Forms)" {
+  class MainForm {
+    + void RefreshSnapshot()
+    + void OpenDiskAnalysis()
+    + void OpenCleanup()
+    + void OpenProcesses()
+    + void OpenSettings()
+  }
+
+  class DiskForm {
+    - DiskScanService scanner
+    + Task ScanFolder(string path)
+    + void ChangeCategory(FileInfoModel item, FileCategory category)
+    + void SortBy(string column)
+  }
+
+  class CleanupForm {
+    + void Preview(List<FileInfoModel> items)
+    + void ConfirmCleanup()
+  }
+
+  class ProcessForm {
+    + void RefreshProcessList()
+    + void KillSelected()
+  }
+
+  class SettingsForm {
+    + void LoadSettings()
+    + void SaveSettings()
+  }
+}
+
+MainForm --> SystemMonitorService : использует
+MainForm --> SettingsService : загружает настройки
+MainForm --> SystemSnapshot : отображает
+MainForm ..> DiskForm : открывает
+MainForm ..> CleanupForm : открывает
+MainForm ..> ProcessForm : открывает
+MainForm ..> SettingsForm : открывает
+
+SystemMonitorService ..> SystemSnapshot : создаёт
+SystemMonitorService ..> ProcessService : использует
+SystemMonitorService ..> DiskInfoModel : читает
+
+DiskForm --> DiskScanService : сканирует
+DiskForm --> FileInfoModel : отображает
+DiskForm --> ProtectionService : проверяет защиту
+DiskScanService ..> FileInfoModel : создаёт
+
+CleanupForm --> CleanupService : вызывает
+CleanupForm --> ProtectionService : проверяет защиту
+CleanupService ..> FileInfoModel : обрабатывает
+CleanupService ..> ProtectionService : проверяет защиту
+
+ProcessForm --> ProcessService : использует
+ProcessService ..> ProcessInfoModel : создаёт
+
+SettingsForm --> SettingsService : сохраняет
+SettingsService ..> AppSettings : сериализует (JSON)
+SettingsService ..> ProtectedItem : сериализует (JSON)
+ProtectionService ..> ProtectedItem : хранит
+ProtectionService ..> AppSettings : читает
+
+FileInfoModel --> FileCategory : имеет
+SystemSnapshot o-- DiskInfoModel : содержит
+SystemSnapshot o-- ProcessInfoModel : содержит
+
+@enduml
