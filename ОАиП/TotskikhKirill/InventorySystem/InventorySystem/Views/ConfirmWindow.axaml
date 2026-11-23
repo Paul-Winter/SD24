@@ -1,0 +1,28 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="InventorySystem.Views.ConfirmWindow"
+        Title="Подтверждение"
+        Width="400" Height="200"
+        WindowStartupLocation="CenterOwner"
+        Background="#1A1625"
+        CanResize="False"
+        SystemDecorations="BorderOnly">
+
+    <Border Background="#2A233B" CornerRadius="8" Margin="10" Padding="20" BorderBrush="#8A2BE2" BorderThickness="1">
+        <Grid RowDefinitions="*, Auto">
+            <StackPanel Grid.Row="0" VerticalAlignment="Center" Spacing="10">
+                <TextBlock Text="Внимание" FontSize="20" FontWeight="Bold" Foreground="#B388FF" HorizontalAlignment="Center"/>
+                <TextBlock x:Name="MessageText" Text="Вы уверены, что хотите удалить эту запись?" 
+                           Foreground="White" FontSize="14" TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center"/>
+            </StackPanel>
+
+            <!-- Кнопки -->
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20" Margin="0,20,0,0">
+                <Button x:Name="YesButton" Content="Да, удалить" 
+                        Background="#C62828" Foreground="White" CornerRadius="4" Padding="20,8" FontWeight="Bold"/>
+                <Button x:Name="NoButton" Content="Отмена" 
+                        Background="#3B3054" Foreground="White" CornerRadius="4" Padding="20,8" FontWeight="Bold"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

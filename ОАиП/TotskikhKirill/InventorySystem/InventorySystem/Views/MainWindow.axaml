@@ -1,0 +1,91 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:InventorySystem.ViewModels"
+        x:Class="InventorySystem.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="IT TOP COLLEGE | Учёт материальных средств"
+        Width="850" Height="650"
+        Background="#1A1625">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="10" Margin="0,0,0,15">
+            <TextBlock Text="" FontSize="28" VerticalAlignment="Center"/>
+            <TextBlock Text="IT TOP COLLEGE" FontSize="26" FontWeight="Bold" Foreground="#B388FF" VerticalAlignment="Center"/>
+            <TextBlock Text="| Учёт материальных средств" FontSize="20" Foreground="Gray" VerticalAlignment="Center" Margin="10,0,0,0"/>
+        </StackPanel>
+
+        <TabControl Grid.Row="1" Background="Transparent" x:Name="MainTabControl">
+            
+            <TabItem Header="Аудитории">
+                <Grid Margin="0,10,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Background="#2A233B" CornerRadius="8" Padding="15" Margin="0,0,0,15">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <TextBlock Text="Номер:" Foreground="White" VerticalAlignment="Center"/>
+                            <TextBox Text="{Binding NewRoomNumber}" Watermark="101" Width="80" Background="#3B3054" Foreground="White" BorderBrush="#8A2BE2"/>
+                            
+                            <TextBlock Text="Мест:" Foreground="White" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                            <TextBox Text="{Binding NewRoomCapacity}" Watermark="30" Width="60" Background="#3B3054" Foreground="White" BorderBrush="#8A2BE2"/>
+                            
+                            <Button Content="Добавить" Command="{Binding SaveRoomCommand}" 
+                                    Background="#8A2BE2" Foreground="White" CornerRadius="4" Padding="15,5" Margin="15,0,0,0" FontWeight="Bold"/>
+                            
+                            <Button Content="Удалить" Command="{Binding DeleteRoomCommand}" 
+                                    Background="#C62828" Foreground="White" CornerRadius="4" Padding="15,5" Margin="10,0,0,0" FontWeight="Bold"/>
+                        </StackPanel>
+                    </Border>
+
+                    <ListBox Grid.Row="1" ItemsSource="{Binding Rooms}" SelectedItem="{Binding SelectedRoom}" 
+                             Background="Transparent" DoubleTapped="OnRoomDoubleTapped">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#2A233B" CornerRadius="6" Padding="12" Margin="0,0,0,8" BorderBrush="#3B3054" BorderThickness="1">
+                                    <Grid ColumnDefinitions="150, *">
+                                        <TextBlock Grid.Column="0" Text="{Binding Number, StringFormat='Аудитория {0}'}" FontWeight="Bold" Foreground="#B388FF" VerticalAlignment="Center" FontSize="16"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding Capacity, StringFormat='{}{0} мест'}" Foreground="LightGray" VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="{Binding CurrentRoomTitle}">
+                <Grid Margin="0,10,0,0">
+                    <ListBox ItemsSource="{Binding SelectedRoomEquipment}" Background="Transparent">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#2A233B" CornerRadius="6" Padding="12" Margin="0,0,0,8" BorderBrush="#3B3054" BorderThickness="1">
+                                    <Grid ColumnDefinitions="*, 150, 100">
+                                        <TextBlock Grid.Column="0" Text="{Binding Name}" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" FontSize="15"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding InventoryNumber, StringFormat='Инв. №: {0}'}" Foreground="LightGray" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding Status}" Foreground="#00FF7F" VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <TextBlock Text="В этой аудитории пока нет оборудования" 
+                               Foreground="Gray" FontSize="16" 
+                               HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock.IsVisible>
+                            <Binding Path="SelectedRoomEquipment.Count" Converter="{x:Static BoolConverters.Not}" />
+                        </TextBlock.IsVisible>
+                    </TextBlock>
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+    </Grid>
+</Window>
