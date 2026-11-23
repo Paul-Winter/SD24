@@ -33,7 +33,6 @@ namespace PCResourceManager
                 _cpuLabel.Text = $"CPU: {_monitor.GetCpuUsage():0.0}%";
                 (double used, double total) = _monitor.GetRamUsage();
                 _ramLabel.Text = $"RAM: {used:0.0} / {total:0.0} ГБ";
-
                 _diskList.Items.Clear();
                 foreach (var d in _monitor.GetDisks().Where(d => d.IsReady))
                 {
