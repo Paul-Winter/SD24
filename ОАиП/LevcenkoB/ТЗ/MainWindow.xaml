@@ -1,35 +1,94 @@
 ﻿<Window x:Class="TeacherScheduleApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Менеджер расписаний" Height="500" Width="900">
-    <Grid>
+        Title="ITpot" Height="750" Width="1100"
+        Background="#F3F4F6" FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#20c997"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#20c997"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="0,0,10,0"/>
+        </Style>
+
+        <Style x:Key="GreenButton" TargetType="Button">
+            <Setter Property="Background" Value="#28a745"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="0,0,10,0"/>
+        </Style>
+
+        <Style x:Key="RedButton" TargetType="Button">
+            <Setter Property="Background" Value="#dc3545"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="0,0,10,0"/>
+        </Style>
+
+        <Style TargetType="DataGridRow">
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#E0F7FA"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="15">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <!-- Панель с кнопками -->
-        <StackPanel Orientation="Horizontal" Margin="10">
-            <Button x:Name="btnLoadData" Content="Загрузить расписание" 
-                    Padding="10,5" Click="btnLoadData_Click" Margin="0,0,10,0"/>
+        <Grid Grid.Row="0" Margin="0,0,0,15">
+            <Border Background="#20c997" Padding="15" CornerRadius="5">
+                <DockPanel>
+                    <Border DockPanel.Dock="Left" Background="#8E24AA" Width="100" Height="40" CornerRadius="3">
+                        <TextBlock Text="ITpot" Foreground="White" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Text="Менеджер расписаний" Foreground="White" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Margin="20,0,0,0"/>
+                </DockPanel>
+            </Border>
+        </Grid>
 
-            <Button x:Name="btnMarkDone" Content="Отметить как проведенную" 
-                    Padding="10,5" Click="btnMarkDone_Click" Margin="0,0,10,0"/>
+        <WrapPanel Grid.Row="1" Margin="0,0,0,15">
+            <Button x:Name="btnLoadData" Content="🔄 Обновить данные" Click="btnLoadData_Click"/>
+            <Button x:Name="btnMarkAll" Content="✅ Отметить всех" Style="{StaticResource GreenButton}" Click="btnMarkAll_Click"/>
+            <Button x:Name="btnCancelAll" Content="❌ Отменить всех" Style="{StaticResource RedButton}" Click="btnCancelAll_Click"/>
+            <Button x:Name="btnLoadWorkload" Content="📊 Показать загруженность" Click="btnLoadWorkload_Click"/>
+        </WrapPanel>
 
-            <Button x:Name="btnMarkCancelled" Content="Отменить пару" 
-                    Padding="10,5" Click="btnMarkCancelled_Click"/>
-        </StackPanel>
-
-        <!-- Таблица -->
-        <DataGrid x:Name="ScheduleDataGrid" Grid.Row="1" Margin="10" 
+        <DataGrid x:Name="ScheduleDataGrid" Grid.Row="2" 
                   AutoGenerateColumns="False" IsReadOnly="True" 
-                  CanUserAddRows="False" RowHeight="30" FontSize="14">
+                  CanUserAddRows="False" RowHeight="40" FontSize="14"
+                  Background="White" AlternatingRowBackground="#FAFAFA" 
+                  BorderThickness="0" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#E0E0E0">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Преподаватель" Binding="{Binding Преподаватель}" Width="200"/>
-                <DataGridTextColumn Header="Предмет" Binding="{Binding Предмет}" Width="220"/>
-                <DataGridTextColumn Header="Аудитория" Binding="{Binding Аудитория}" Width="100"/>
-                <DataGridTextColumn Header="День" Binding="{Binding День}" Width="60"/>
-                <DataGridTextColumn Header="Начало" Binding="{Binding Начало, StringFormat='\{0:HH:mm\}'}" Width="80"/>
+                <DataGridTextColumn Header="Преподаватель" Binding="{Binding Преподаватель}" Width="220"/>
+                <DataGridTextColumn Header="Предмет" Binding="{Binding Предмет}" Width="200"/>
+                <DataGridTextColumn Header="Аудитория" Binding="{Binding Аудитория}" Width="90"/>
+                <DataGridTextColumn Header="Дата" Binding="{Binding Дата, StringFormat='\{0:dd.MM.yyyy\}'}" Width="100"/>
+                <DataGridTextColumn Header="Время" Binding="{Binding Время}" Width="120"/>
+                <DataGridTextColumn Header="Часы" Binding="{Binding Часы}" Width="60"/>
 
                 <DataGridTemplateColumn Header="Статус" Width="120">
                     <DataGridTemplateColumn.CellTemplate>
@@ -41,11 +100,11 @@
                         <Style TargetType="DataGridCell">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Статус}" Value="проведено">
-                                    <Setter Property="Foreground" Value="Green"/>
+                                    <Setter Property="Foreground" Value="#28a745"/>
                                     <Setter Property="TextBlock.Text" Value="✔️ Проведено"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Статус}" Value="отменено">
-                                    <Setter Property="Foreground" Value="Red"/>
+                                    <Setter Property="Foreground" Value="#dc3545"/>
                                     <Setter Property="TextBlock.Text" Value="❌ Отменено"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -53,8 +112,29 @@
                     </DataGridTemplateColumn.CellStyle>
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn Header="Часы" Binding="{Binding Часы}" Width="80"/>
+                <DataGridTemplateColumn Header="Действия" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Content="✔️" Background="#28a745" Foreground="White" 
+                                        Width="30" Height="25" BorderThickness="0" Margin="0,0,5,0"
+                                        Click="btnRowDone_Click"/>
+                                <Button Content="❌" Background="#dc3545" Foreground="White" 
+                                        Width="30" Height="25" BorderThickness="0"
+                                        Click="btnRowCancel_Click"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+
+        <TextBlock Grid.Row="3" Text="Сводка по загруженности преподавателей:" Margin="0,15,0,10" FontWeight="Bold" FontSize="16" Foreground="#20c997"/>
+
+        <DataGrid x:Name="WorkloadDataGrid" Grid.Row="4" 
+                  AutoGenerateColumns="True" IsReadOnly="True" 
+                  CanUserAddRows="False" RowHeight="30" FontSize="14" 
+                  Background="White" AlternatingRowBackground="#FAFAFA" 
+                  BorderThickness="0" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#E0E0E0"/>
     </Grid>
 </Window>

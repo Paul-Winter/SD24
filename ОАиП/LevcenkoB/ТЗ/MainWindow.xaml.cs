@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Windows;
+using System.Windows.Controls;
 using Npgsql;
 
 namespace TeacherScheduleApp
@@ -32,14 +33,14 @@ namespace TeacherScheduleApp
                             t.full_name AS ""Преподаватель"", 
                             sub.name AS ""Предмет"", 
                             s.auditorium_number AS ""Аудитория"", 
-                            s.day_of_week AS ""День"", 
-                            s.start_time AS ""Начало"", 
+                            s.lesson_date AS ""Дата"",
+                            TO_CHAR(s.start_time, 'HH24:MI') || ' - ' || TO_CHAR(s.end_time, 'HH24:MI') AS ""Время"",
                             s.status AS ""Статус"", 
                             s.hours_count AS ""Часы""
                         FROM schedule s
                         JOIN teachers t ON s.teacher_id = t.id
                         JOIN subjects sub ON s.subject_id = sub.id
-                        ORDER BY s.day_of_week, s.start_time;";
+                        ORDER BY s.lesson_date, s.start_time;";
 
                     NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(sql, conn);
                     DataTable dt = new DataTable();
@@ -53,28 +54,36 @@ namespace TeacherScheduleApp
             }
         }
 
-        private void btnMarkDone_Click(object sender, RoutedEventArgs e)
+        private void btnMarkAll_Click(object sender, RoutedEventArgs e)
         {
-            if (ScheduleDataGrid.SelectedItem == null)
-            {
-                MessageBox.Show("Сначала выбери пару в таблице!");
-                return;
-            }
-            DataRowView row = (DataRowView)ScheduleDataGrid.SelectedItem;
-            int scheduleId = Convert.ToInt32(row["ID"]);
-            ChangeStatus(scheduleId, "проведено");
+            ChangeAllStatus("проведено");
         }
 
-        private void btnMarkCancelled_Click(object sender, RoutedEventArgs e)
+        private void btnCancelAll_Click(object sender, RoutedEventArgs e)
         {
-            if (ScheduleDataGrid.SelectedItem == null)
+            ChangeAllStatus("отменено");
+        }
+
+        private void btnRowDone_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+            DataRowView row = btn.DataContext as DataRowView;
+            if (row != null)
             {
-                MessageBox.Show("Сначала выбери пару в таблице!");
-                return;
+                int scheduleId = Convert.ToInt32(row["ID"]);
+                ChangeStatus(scheduleId, "проведено");
             }
-            DataRowView row = (DataRowView)ScheduleDataGrid.SelectedItem;
-            int scheduleId = Convert.ToInt32(row["ID"]);
-            ChangeStatus(scheduleId, "отменено");
+        }
+
+        private void btnRowCancel_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+            DataRowView row = btn.DataContext as DataRowView;
+            if (row != null)
+            {
+                int scheduleId = Convert.ToInt32(row["ID"]);
+                ChangeStatus(scheduleId, "отменено");
+            }
         }
 
         private void ChangeStatus(int id, string newStatus)
@@ -97,6 +106,62 @@ namespace TeacherScheduleApp
             catch (Exception ex)
             {
                 MessageBox.Show("Ошибка при обновлении: " + ex.Message);
+            }
+        }
+
+        private void ChangeAllStatus(string newStatus)
+        {
+            if (MessageBox.Show("Вы уверены, что хотите изменить статус у ВСЕХ пар?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                    {
+                        conn.Open();
+                        string sql = "UPDATE schedule SET status = @status";
+                        using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
+                        {
+                            cmd.Parameters.AddWithValue("status", newStatus);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    LoadData();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка при массовом обновлении: " + ex.Message);
+                }
+            }
+        }
+
+        private void btnLoadWorkload_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string sql = @"
+                        SELECT 
+                            t.full_name AS ""Преподаватель"",
+                            COUNT(s.id) AS ""Всего пар"",
+                            COALESCE(SUM(s.hours_count), 0) AS ""Всего часов"",
+                            COUNT(CASE WHEN s.status = 'проведено' THEN 1 END) AS ""Проведено пар"",
+                            COALESCE(SUM(CASE WHEN s.status = 'проведено' THEN s.hours_count ELSE 0 END), 0) AS ""Отработано часов""
+                        FROM teachers t
+                        LEFT JOIN schedule s ON t.id = s.teacher_id
+                        GROUP BY t.id, t.full_name
+                        ORDER BY ""Отработано часов"" DESC;";
+
+                    NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(sql, conn);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+                    WorkloadDataGrid.ItemsSource = dt.DefaultView;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при загрузке загруженности: " + ex.Message);
             }
         }
     }
