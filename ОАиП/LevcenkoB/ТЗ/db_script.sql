@@ -1,3 +1,5 @@
+-- создание с нуля (вспомогательное)
+CREATE DATABASE schedule_db;
 
 CREATE TABLE teachers (
     id SERIAL PRIMARY KEY,
