@@ -45,11 +45,10 @@
             CollegeOffline = new Button();
             VUZOffline = new Button();
             AcademyOffline = new Button();
-            actionPanel = new RichTextBox();
-            textBox1 = new TextBox();
+            actionPanelForm1 = new RichTextBox();
+            SearchText = new TextBox();
             Search = new Button();
-            Generate = new Button();
-            Copy = new Button();
+            Form2TestButton = new Button();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -68,16 +67,15 @@
             // 
             // splitContainer1.Panel1
             // 
+            splitContainer1.Panel1.Controls.Add(Form2TestButton);
             splitContainer1.Panel1.Controls.Add(label1);
             splitContainer1.Panel1.Controls.Add(optionsPanel);
             splitContainer1.Panel1.Controls.Add(OfflineOnline);
             // 
             // splitContainer1.Panel2
             // 
-            splitContainer1.Panel2.Controls.Add(Copy);
-            splitContainer1.Panel2.Controls.Add(Generate);
-            splitContainer1.Panel2.Controls.Add(actionPanel);
-            splitContainer1.Panel2.Controls.Add(textBox1);
+            splitContainer1.Panel2.Controls.Add(actionPanelForm1);
+            splitContainer1.Panel2.Controls.Add(SearchText);
             splitContainer1.Panel2.Controls.Add(Search);
             splitContainer1.Size = new Size(800, 450);
             splitContainer1.SplitterDistance = 229;
@@ -277,21 +275,21 @@
             AcademyOffline.TextAlign = ContentAlignment.MiddleLeft;
             AcademyOffline.UseVisualStyleBackColor = true;
             // 
-            // actionPanel
+            // actionPanelForm1
             // 
-            actionPanel.BorderStyle = BorderStyle.None;
-            actionPanel.Location = new Point(3, 37);
-            actionPanel.Name = "actionPanel";
-            actionPanel.Size = new Size(552, 371);
-            actionPanel.TabIndex = 2;
-            actionPanel.Text = "";
+            actionPanelForm1.BorderStyle = BorderStyle.None;
+            actionPanelForm1.Location = new Point(3, 37);
+            actionPanelForm1.Name = "actionPanelForm1";
+            actionPanelForm1.Size = new Size(552, 384);
+            actionPanelForm1.TabIndex = 2;
+            actionPanelForm1.Text = "";
             // 
-            // textBox1
+            // SearchText
             // 
-            textBox1.Location = new Point(100, 7);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(418, 23);
-            textBox1.TabIndex = 1;
+            SearchText.Location = new Point(100, 7);
+            SearchText.Name = "SearchText";
+            SearchText.Size = new Size(418, 23);
+            SearchText.TabIndex = 1;
             // 
             // Search
             // 
@@ -303,26 +301,15 @@
             Search.UseVisualStyleBackColor = true;
             Search.Click += button2_Click_1;
             // 
-            // Generate
+            // Form2TestButton
             // 
-            Generate.Font = new Font("Segoe UI", 10F);
-            Generate.Location = new Point(308, 414);
-            Generate.Name = "Generate";
-            Generate.Size = new Size(115, 32);
-            Generate.TabIndex = 3;
-            Generate.Text = "Сгенерировать";
-            Generate.UseVisualStyleBackColor = true;
-            Generate.Click += Generate_Click;
-            // 
-            // Copy
-            // 
-            Copy.Font = new Font("Segoe UI", 10F);
-            Copy.Location = new Point(429, 414);
-            Copy.Name = "Copy";
-            Copy.Size = new Size(115, 32);
-            Copy.TabIndex = 4;
-            Copy.Text = "Скопировать";
-            Copy.UseVisualStyleBackColor = true;
+            Form2TestButton.Location = new Point(7, 424);
+            Form2TestButton.Name = "Form2TestButton";
+            Form2TestButton.Size = new Size(134, 23);
+            Form2TestButton.TabIndex = 3;
+            Form2TestButton.Text = "форма заполнения";
+            Form2TestButton.UseVisualStyleBackColor = true;
+            Form2TestButton.Click += Form2TestButton_Click;
             // 
             // Form1
             // 
@@ -359,15 +346,14 @@
         private Button VUZOffline;
         private Button AcademyOffline;
         private Button Search;
-        private TextBox textBox1;
+        private TextBox SearchText;
         private Panel optionsPanel;
         private Button btnQueries;
         private Button btnObjections;
         private Button btnPrice;
         private Button btnDesc;
         private Label label1;
-        private RichTextBox actionPanel;
-        private Button Generate;
-        private Button Copy;
+        private RichTextBox actionPanelForm1;
+        private Button Form2TestButton;
     }
 }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\source\\repos\\ManagerHelper\\ManagerHelper\\ManagerHelper.csproj": {}
+    "C:\\Users\\User\\source\\repos\\SD24\\ОАиП\\SkripanKseniia\\ManagerHelper\\ManagerHelper\\ManagerHelper.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\source\\repos\\ManagerHelper\\ManagerHelper\\ManagerHelper.csproj": {
+    "C:\\Users\\User\\source\\repos\\SD24\\ОАиП\\SkripanKseniia\\ManagerHelper\\ManagerHelper\\ManagerHelper.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\source\\repos\\ManagerHelper\\ManagerHelper\\ManagerHelper.csproj",
+        "projectUniqueName": "C:\\Users\\User\\source\\repos\\SD24\\ОАиП\\SkripanKseniia\\ManagerHelper\\ManagerHelper\\ManagerHelper.csproj",
         "projectName": "ManagerHelper",
-        "projectPath": "C:\\Users\\User\\source\\repos\\ManagerHelper\\ManagerHelper\\ManagerHelper.csproj",
+        "projectPath": "C:\\Users\\User\\source\\repos\\SD24\\ОАиП\\SkripanKseniia\\ManagerHelper\\ManagerHelper\\ManagerHelper.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\source\\repos\\ManagerHelper\\ManagerHelper\\obj\\",
+        "outputPath": "C:\\Users\\User\\source\\repos\\SD24\\ОАиП\\SkripanKseniia\\ManagerHelper\\ManagerHelper\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

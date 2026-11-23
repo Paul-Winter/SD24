@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ManagerHelper")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e6565e3d853c28953a0d8d480b305e6dd1adf851")]
 [assembly: System.Reflection.AssemblyProductAttribute("ManagerHelper")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ManagerHelper")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

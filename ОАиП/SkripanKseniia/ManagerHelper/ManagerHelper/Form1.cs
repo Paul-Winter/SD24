@@ -57,9 +57,10 @@ namespace ManagerHelper
 
         }
 
-        private void Generate_Click(object sender, EventArgs e)
+        private void Form2TestButton_Click(object sender, EventArgs e)
         {
-
+            FillForm fillForm = new FillForm();
+            fillForm.Show();
         }
     }
 }
