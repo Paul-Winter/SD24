@@ -1,169 +1,92 @@
-@startuml PCResourceManager
+@startuml IDE_Booster
 skinparam classAttributeIconSize 0
 skinparam packageStyle rectangle
 
-enum FileCategory {
-  CanDelete
-  DoNotDelete
-  NeedsReview
-  System
+enum PerformanceMode {
+  Standard
+  Performance
+  Manual
 }
 
-package "Models" {
-  class FileInfoModel {
-    + string Name
-    + string FullPath
-    + long SizeBytes
-    + string FileType
-    + bool IsFolder
-    + DateTime LastModified
-    + FileCategory Category
-    + string FormattedSize
-  }
 
-  class ProcessInfoModel {
-    + int Id
-    + string Name
-    + double RamUsageMb
-    + double CpuUsage
-    + bool IsSystem
-    + bool IsProtected
-  }
-
-  class DiskInfoModel {
-    + string DriveLetter
-    + long TotalBytes
-    + long FreeBytes
-    + long UsedBytes
-    + double UsedPercent
-  }
-
-  class SystemSnapshot {
-    + double CpuLoad
-    + long RamUsedMb
-    + long RamTotalMb
-    + DateTime Timestamp
-    + List<DiskInfoModel> Disks
-    + List<ProcessInfoModel> Processes
-  }
-
-  class ProtectedItem {
-    + string Path
-    + bool IsFolder
-    + DateTime DateAdded
-  }
-
-  class AppSettings {
-    + int RefreshIntervalMs
-    + bool AutoScanEnabled
-    + bool NotificationsEnabled
-    + string Language
-    + List<string> ProtectedFolders
-    + List<string> Exceptions
-  }
+class MainForm {
+  + string ProgramName
+  + string Version
+  + PerformanceMode SelectedMode
+  + string StatusText
+  + void SelectIde()
+  + void LaunchIde()
+  + void StartOptimization()
+  + void StopOptimization()
+  + void RefreshMonitor()
+  + void ShowError(string message)
 }
 
-package "Services" {
-  class SystemMonitorService {
-    + event EventHandler<SystemSnapshot> SnapshotUpdated
-    + void Start(int intervalMs)
-    + void Stop()
-    + SystemSnapshot GetSnapshot()
-  }
-
-  class DiskScanService {
-    + event EventHandler<int> ProgressChanged
-    + Task<List<FileInfoModel>> ScanAsync(string path)
-  }
-
-  class CleanupService {
-    + long CalculateTotalSize(List<FileInfoModel> items)
-    + Task<CleanupResult> CleanupAsync(List<FileInfoModel> items, bool toRecycleBin)
-  }
-
-  class ProtectionService {
-    + bool IsProtected(string path)
-    + void AddProtected(string path, bool isFolder)
-    + void RemoveProtected(string path)
-    + List<ProtectedItem> GetProtectedItems()
-  }
-
-  class ProcessService {
-    + List<ProcessInfoModel> GetProcesses()
-    + bool TerminateProcess(int id)
-  }
-
-  class SettingsService {
-    + AppSettings Load()
-    + void Save(AppSettings settings)
-  }
+class IdeManager {
+  - string _lastIdePath
+  + string SelectedIdePath
+  + string SelectedIdeName
+  + bool SelectIde()
+  + bool IsIdeRunning()
+  + bool LaunchIde()
+  + string GetIdeStatus()
 }
 
-package "Forms (Windows Forms)" {
-  class MainForm {
-    + void RefreshSnapshot()
-    + void OpenDiskAnalysis()
-    + void OpenCleanup()
-    + void OpenProcesses()
-    + void OpenSettings()
-  }
-
-  class DiskForm {
-    - DiskScanService scanner
-    + Task ScanFolder(string path)
-    + void ChangeCategory(FileInfoModel item, FileCategory category)
-    + void SortBy(string column)
-  }
-
-  class CleanupForm {
-    + void Preview(List<FileInfoModel> items)
-    + void ConfirmCleanup()
-  }
-
-  class ProcessForm {
-    + void RefreshProcessList()
-    + void KillSelected()
-  }
-
-  class SettingsForm {
-    + void LoadSettings()
-    + void SaveSettings()
-  }
+class ProcessManager {
+  + Process FindProcessByName(string name)
+  + Process GetIdeProcess(string exeName)
+  + List<Process> GetUserProcesses()
+  + bool ChangePriority(Process p, ProcessPriorityClass priority)
+  + ProcessPriorityClass GetPriority(Process p)
+  + bool IsSystemProcess(Process p)
 }
 
-MainForm --> SystemMonitorService : использует
-MainForm --> SettingsService : загружает настройки
-MainForm --> SystemSnapshot : отображает
-MainForm ..> DiskForm : открывает
-MainForm ..> CleanupForm : открывает
-MainForm ..> ProcessForm : открывает
-MainForm ..> SettingsForm : открывает
+class OptimizationManager {
+  - Dictionary<int, ProcessPriorityClass> _originalPriorities
+  + PerformanceMode CurrentMode
+  + bool IsActive
+  + bool Start(PerformanceMode mode)
+  + void Stop()
+  + void ApplyMode(PerformanceMode mode)
+  + void SaveOriginalPriority(Process p)
+  + void RestoreAllPriorities()
+  + void OnIdeProcessExited()
+}
 
-SystemMonitorService ..> SystemSnapshot : создаёт
-SystemMonitorService ..> ProcessService : использует
-SystemMonitorService ..> DiskInfoModel : читает
+class SystemMonitor {
+  + double CpuLoad
+  + double RamUsedMb
+  + double RamTotalMb
+  + int ProcessCount
+  + double IdeRamUsageMb
+  + double IdeCpuUsage
+  + void Start(int intervalMs)
+  + void Stop()
+  + void Update()
+}
 
-DiskForm --> DiskScanService : сканирует
-DiskForm --> FileInfoModel : отображает
-DiskForm --> ProtectionService : проверяет защиту
-DiskScanService ..> FileInfoModel : создаёт
+class SettingsManager {
+  + string LastIdePath
+  + PerformanceMode LastMode
+  + List<string> SecondaryProcesses
+  + void Load()
+  + void Save()
+}
 
-CleanupForm --> CleanupService : вызывает
-CleanupForm --> ProtectionService : проверяет защиту
-CleanupService ..> FileInfoModel : обрабатывает
-CleanupService ..> ProtectionService : проверяет защиту
 
-ProcessForm --> ProcessService : использует
-ProcessService ..> ProcessInfoModel : создаёт
+MainForm --> IdeManager : использует
+MainForm --> OptimizationManager : управляет оптимизацией
+MainForm --> SystemMonitor : отображает метрики
+MainForm --> SettingsManager : загружает/сохраняет настройки
+MainForm --> PerformanceMode : выбирает режим
 
-SettingsForm --> SettingsService : сохраняет
-SettingsService ..> AppSettings : сериализует (JSON)
-SettingsService ..> ProtectedItem : сериализует (JSON)
-ProtectionService ..> ProtectedItem : хранит
-ProtectionService ..> AppSettings : читает
+OptimizationManager --> IdeManager : получает процесс IDE
+OptimizationManager --> ProcessManager : меняет приоритеты
+OptimizationManager --> PerformanceMode : применяет режим
+OptimizationManager --> SettingsManager : сохраняет исходные приоритеты
 
-FileInfoModel --> FileCategory : имеет
-SystemSnapshot o-- DiskInfoModel : содержит
-SystemSnapshot o-- ProcessInfoModel : содержит
+IdeManager --> ProcessManager : ищет/проверяет процесс
+
+SettingsManager ..> PerformanceMode : хранит последний режим
 
 @enduml
