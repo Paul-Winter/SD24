@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             splitContainer1 = new SplitContainer();
-            PaymentOps = new Label();
-            PaymentCheckBox = new CheckedListBox();
-            CopyButton = new Button();
             FillButton = new Button();
+            CopyButton = new Button();
+            PaymentCheckBox = new CheckedListBox();
+            Payment = new Label();
             NameManagerText = new TextBox();
-            NameClientText = new TextBox();
             NameManager = new Label();
+            NameClientText = new TextBox();
             NameClient = new Label();
             actionPanelForm2 = new RichTextBox();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
@@ -52,105 +52,119 @@
             // 
             // splitContainer1.Panel1
             // 
-            splitContainer1.Panel1.Controls.Add(PaymentOps);
-            splitContainer1.Panel1.Controls.Add(PaymentCheckBox);
-            splitContainer1.Panel1.Controls.Add(CopyButton);
             splitContainer1.Panel1.Controls.Add(FillButton);
+            splitContainer1.Panel1.Controls.Add(CopyButton);
+            splitContainer1.Panel1.Controls.Add(PaymentCheckBox);
+            splitContainer1.Panel1.Controls.Add(Payment);
             splitContainer1.Panel1.Controls.Add(NameManagerText);
-            splitContainer1.Panel1.Controls.Add(NameClientText);
             splitContainer1.Panel1.Controls.Add(NameManager);
+            splitContainer1.Panel1.Controls.Add(NameClientText);
             splitContainer1.Panel1.Controls.Add(NameClient);
+            splitContainer1.Panel1.Paint += splitContainer1_Panel1_Paint;
             // 
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(actionPanelForm2);
+            splitContainer1.Panel2.Paint += splitContainer1_Panel2_Paint;
             splitContainer1.Size = new Size(800, 450);
-            splitContainer1.SplitterDistance = 229;
-            splitContainer1.TabIndex = 3;
+            splitContainer1.SplitterDistance = 266;
+            splitContainer1.TabIndex = 0;
             // 
-            // PaymentOps
+            // FillButton
             // 
-            PaymentOps.AutoSize = true;
-            PaymentOps.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            PaymentOps.Location = new Point(12, 179);
-            PaymentOps.Name = "PaymentOps";
-            PaymentOps.Size = new Size(131, 19);
-            PaymentOps.TabIndex = 7;
-            PaymentOps.Text = "Способы оплаты:";
+            FillButton.BackColor = SystemColors.ActiveCaption;
+            FillButton.Font = new Font("Segoe UI", 10F);
+            FillButton.Location = new Point(12, 347);
+            FillButton.Name = "FillButton";
+            FillButton.Size = new Size(215, 41);
+            FillButton.TabIndex = 8;
+            FillButton.Text = "Заполнить";
+            FillButton.UseVisualStyleBackColor = false;
+            FillButton.Click += FillButton_Click;
+            // 
+            // CopyButton
+            // 
+            CopyButton.BackColor = SystemColors.ActiveCaption;
+            CopyButton.Font = new Font("Segoe UI", 10F);
+            CopyButton.Location = new Point(12, 394);
+            CopyButton.Name = "CopyButton";
+            CopyButton.Size = new Size(215, 41);
+            CopyButton.TabIndex = 7;
+            CopyButton.Text = "Скопировать";
+            CopyButton.UseVisualStyleBackColor = false;
+            CopyButton.Click += CopyButton_Click;
             // 
             // PaymentCheckBox
             // 
             PaymentCheckBox.FormattingEnabled = true;
-            PaymentCheckBox.Items.AddRange(new object[] { "Тест", "тест", "тЕСТ", "тсеТ", "бубубу", "Бабаба", "бЕбЕбЕ", "оыолва", "щзцз", "длыгшцл" });
-            PaymentCheckBox.Location = new Point(12, 201);
+            PaymentCheckBox.Items.AddRange(new object[] { "кредит", "рассрочка", "материнский капитал", "СБП", "реквизиты", "сайт", "тест скроллинга", "тест скроллинга", "тест скроллинга", "тест скроллинга", "тест скроллинга" });
+            PaymentCheckBox.Location = new Point(12, 199);
             PaymentCheckBox.Name = "PaymentCheckBox";
-            PaymentCheckBox.Size = new Size(202, 112);
-            PaymentCheckBox.TabIndex = 6;
+            PaymentCheckBox.Size = new Size(215, 130);
+            PaymentCheckBox.TabIndex = 5;
+            PaymentCheckBox.SelectedIndexChanged += PaymentCheckBox_SelectedIndexChanged;
             // 
-            // CopyButton
+            // Payment
             // 
-            CopyButton.Font = new Font("Segoe UI", 10F);
-            CopyButton.Location = new Point(13, 387);
-            CopyButton.Name = "CopyButton";
-            CopyButton.Size = new Size(121, 38);
-            CopyButton.TabIndex = 5;
-            CopyButton.Text = "Скопировать";
-            CopyButton.UseVisualStyleBackColor = true;
-            // 
-            // FillButton
-            // 
-            FillButton.Font = new Font("Segoe UI", 10F);
-            FillButton.Location = new Point(13, 343);
-            FillButton.Name = "FillButton";
-            FillButton.Size = new Size(121, 38);
-            FillButton.TabIndex = 4;
-            FillButton.Text = "Заполнить";
-            FillButton.UseVisualStyleBackColor = true;
+            Payment.AutoSize = true;
+            Payment.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            Payment.Location = new Point(12, 179);
+            Payment.Name = "Payment";
+            Payment.Size = new Size(121, 17);
+            Payment.TabIndex = 4;
+            Payment.Text = "Способы оплаты:";
+            Payment.Click += Payment_Click;
             // 
             // NameManagerText
             // 
-            NameManagerText.Location = new Point(12, 116);
+            NameManagerText.BorderStyle = BorderStyle.FixedSingle;
+            NameManagerText.Location = new Point(12, 111);
             NameManagerText.Multiline = true;
             NameManagerText.Name = "NameManagerText";
-            NameManagerText.Size = new Size(202, 49);
+            NameManagerText.Size = new Size(215, 38);
             NameManagerText.TabIndex = 3;
-            // 
-            // NameClientText
-            // 
-            NameClientText.Location = new Point(13, 32);
-            NameClientText.Multiline = true;
-            NameClientText.Name = "NameClientText";
-            NameClientText.Size = new Size(202, 49);
-            NameClientText.TabIndex = 2;
+            NameManagerText.TextChanged += NameManagerText_TextChanged;
             // 
             // NameManager
             // 
             NameManager.AutoSize = true;
-            NameManager.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            NameManager.Location = new Point(13, 94);
+            NameManager.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            NameManager.Location = new Point(12, 91);
             NameManager.Name = "NameManager";
-            NameManager.Size = new Size(133, 19);
-            NameManager.TabIndex = 1;
+            NameManager.Size = new Size(120, 17);
+            NameManager.TabIndex = 2;
             NameManager.Text = "ФИО менеджера:";
+            NameManager.Click += NameManager_Click;
+            // 
+            // NameClientText
+            // 
+            NameClientText.BorderStyle = BorderStyle.FixedSingle;
+            NameClientText.Location = new Point(12, 29);
+            NameClientText.Multiline = true;
+            NameClientText.Name = "NameClientText";
+            NameClientText.Size = new Size(215, 38);
+            NameClientText.TabIndex = 1;
+            NameClientText.TextChanged += NameClientText_TextChanged;
             // 
             // NameClient
             // 
             NameClient.AutoSize = true;
-            NameClient.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            NameClient.Location = new Point(13, 10);
+            NameClient.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            NameClient.Location = new Point(12, 9);
             NameClient.Name = "NameClient";
-            NameClient.Size = new Size(107, 19);
+            NameClient.Size = new Size(98, 17);
             NameClient.TabIndex = 0;
             NameClient.Text = "ФИО клиента:";
+            NameClient.Click += NameClient_Click;
             // 
             // actionPanelForm2
             // 
-            actionPanelForm2.BorderStyle = BorderStyle.None;
             actionPanelForm2.Location = new Point(3, 12);
             actionPanelForm2.Name = "actionPanelForm2";
-            actionPanelForm2.Size = new Size(552, 426);
-            actionPanelForm2.TabIndex = 2;
+            actionPanelForm2.Size = new Size(515, 423);
+            actionPanelForm2.TabIndex = 0;
             actionPanelForm2.Text = "";
+            actionPanelForm2.TextChanged += actionPanelForm2_TextChanged;
             // 
             // FillForm
             // 
@@ -172,14 +186,14 @@
         #endregion
 
         private SplitContainer splitContainer1;
-        private RichTextBox actionPanelForm2;
-        private Label NameClient;
-        private Button CopyButton;
-        private Button FillButton;
-        private TextBox NameManagerText;
-        private TextBox NameClientText;
-        private Label NameManager;
-        private Label PaymentOps;
         private CheckedListBox PaymentCheckBox;
+        private Label Payment;
+        private TextBox NameManagerText;
+        private Label NameManager;
+        private TextBox NameClientText;
+        private Label NameClient;
+        private Button FillButton;
+        private Button CopyButton;
+        private RichTextBox actionPanelForm2;
     }
 }
