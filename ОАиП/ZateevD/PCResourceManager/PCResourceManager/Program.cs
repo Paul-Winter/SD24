@@ -14,11 +14,9 @@ namespace PCResourceManager
             string dataFolder = Path.Combine(AppContext.BaseDirectory, "Data");
             var repo = new SettingsRepository(dataFolder);
             var protection = new ProtectionService(repo);
-            var monitor = new ResourceMonitor();
             var scanner = new DiskScanner(protection);
             var cleanup = new CleanupService(protection);
-            var pm = new ProcessManager();
-            Application.Run(new MainForm(monitor, scanner, protection, cleanup, pm));
+            Application.Run(new MainForm(repo, scanner, protection, cleanup));
         }
     }
 }
