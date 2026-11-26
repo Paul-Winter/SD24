@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace IDE_Booster.Managers
+namespace IDE_Booster
 {
-    internal class IdeManager
+    public class IdeManager
     {
+        private string _lastIdePath = "";
+
+        public string SelectedIdePath { get; set; } = "";
+        public string SelectedIdeName { get; set; } = "";
+
     }
 }

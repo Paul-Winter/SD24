@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace IDE_Booster.Enums
+namespace IDE_Booster
 {
-    internal enum PerformanceMode
+    public enum PerformanceMode
     {
+        Standard,
+        Performance,
+        Manual
     }
 }
