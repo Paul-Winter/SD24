@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace IDE_Booster
+namespace IDE_Booster.Monitoring
 {
-    internal class SettingManager
+    internal class SystemMonitor
     {
     }
 }
