@@ -1,12 +1,18 @@
-﻿namespace IDE_Booster
+﻿using System.Xml;
+
+namespace IDE_Booster
 {
     partial class MainForm
     {
         /// <summary>
         ///  Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private System.ComponentModel.IContainer? components = null;
 
+        private Button selectButton = null!;
+        private Button launchButton = null!;
+        private Label nameLabel = null!;
+        private Label pathLabel = null!;
         /// <summary>
         ///  Clean up any resources being used.
         /// </summary>
@@ -28,12 +34,53 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            selectButton = new Button();
+            launchButton = new Button();
+            nameLabel = new Label();
+            pathLabel = new Label();
+
+            SuspendLayout();
+
+            // selectButton
+            selectButton.Location = new Point(30, 30);
+            selectButton.Size = new Size(150, 40);
+            selectButton.Text = "Выбрать IDE";
+            selectButton.UseVisualStyleBackColor = true;
+            selectButton.Click += selectButton_Click;
+
+            // launchButton
+            launchButton.Location = new Point(200, 30);
+            launchButton.Size = new Size(150, 40);
+            launchButton.Text = "Запустить IDE";
+            launchButton.UseVisualStyleBackColor = true;
+            launchButton.Click += launchButton_Click;
+
+            // nameLabel
+            nameLabel.AutoSize = true;
+            nameLabel.Location = new Point(30, 100);
+            nameLabel.Text = "IDE не выбрана";
+
+            // pathLabel
+            pathLabel.AutoSize = true;
+            pathLabel.Location = new Point(30, 130);
+            pathLabel.Text = "Путь: отсутствует";
+
+            // MainForm
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Text = "MainForm";
+            ClientSize = new Size(600, 350);
+            Controls.Add(selectButton);
+            Controls.Add(launchButton);
+            Controls.Add(nameLabel);
+            Controls.Add(pathLabel);
+            Name = "MainForm";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "IDE Booster";
+
+            ResumeLayout(false);
+            PerformLayout();
         }
+    }
 
         #endregion
-    }
 }

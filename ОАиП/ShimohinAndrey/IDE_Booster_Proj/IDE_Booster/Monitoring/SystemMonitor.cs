@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace IDEBooster;
+namespace IDE_Booster;
 
 public class SystemMonitor
 {
