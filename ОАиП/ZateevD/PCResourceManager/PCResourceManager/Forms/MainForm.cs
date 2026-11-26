@@ -1,40 +1,56 @@
+using System;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 using PCResourceManager.Services;
-namespace PCResourceManager
+namespace PCResourceManager.Forms
 {
     public partial class MainForm : Form
     {
-        private readonly IResourceMonitor _monitor;
-        private readonly System.Windows.Forms.Timer _timer = new() { Interval = 2000 };
-        private readonly Label _cpuLabel = new() { AutoSize = true };
-        private readonly Label _ramLabel = new() { AutoSize = true };
+        private readonly SettingsRepository _repo;
+        private readonly IDiskScanner _scanner;
+        private readonly ProtectionService _protection;
+        private readonly ICleanupService _cleanup;
+        private readonly System.Windows.Forms.Timer _timer = new() { Interval = 5000 };
         private readonly ListView _diskList = new() { Dock = DockStyle.Fill, View = View.Details };
-        public MainForm(IResourceMonitor monitor)
+        private readonly Button _openDiskBtn = new() { Text = "Анализ дисков", Width = 150, Height = 40 };
+        private readonly Button _openSettingsBtn = new() { Text = "Белый список", Width = 150, Height = 40 };
+        public MainForm(SettingsRepository repo, IDiskScanner scanner, ProtectionService protection, ICleanupService cleanup)
         {
-            _monitor = monitor;
+            _repo = repo;
+            _scanner = scanner;
+            _protection = protection;
+            _cleanup = cleanup;
             Text = "PC Resource Manager";
-            Width = 900; Height = 600;
-            var panel = new FlowLayoutPanel { Dock = DockStyle.Top, Height = 60, Padding = new(10) };
-            panel.Controls.Add(_cpuLabel);
-            panel.Controls.Add(_ramLabel);
-            _diskList.Columns.Add("Диск", 80);
-            _diskList.Columns.Add("Всего, ГБ", 100);
-            _diskList.Columns.Add("Свободно, ГБ", 110);
+            Width = 900; Height = 500;
+            StartPosition = FormStartPosition.CenterScreen;
+            BackColor = Color.WhiteSmoke;
+            _timer.Tick += (_, _) => RefreshDisks();
+            var buttonPanel = new FlowLayoutPanel { Dock = DockStyle.Top, Height = 60, Padding = new Padding(10) };
+            _openDiskBtn.BackColor = Color.LightSteelBlue;
+            _openSettingsBtn.BackColor = Color.LightSteelBlue;
+            buttonPanel.Controls.Add(_openDiskBtn);
+            buttonPanel.Controls.Add(_openSettingsBtn);
+            var listContainer = new Panel { Dock = DockStyle.Fill, Padding = new Padding(10) };
+            _diskList.Columns.Add("Диск", 100);
+            _diskList.Columns.Add("Всего, ГБ", 120);
+            _diskList.Columns.Add("Свободно, ГБ", 120);
             _diskList.Columns.Add("Занято, %", 100);
-            Controls.Add(_diskList);
-            Controls.Add(panel);
-            _timer.Tick += (_, _) => RefreshDashboard();
-            Load += (_, _) => { RefreshDashboard(); _timer.Start(); };
-            FormClosed += (_, _) => { _timer.Stop(); (_monitor as IDisposable)?.Dispose(); };
+            listContainer.Controls.Add(_diskList);
+            Controls.Add(listContainer);
+            Controls.Add(buttonPanel);
+            Load += (_, _) => { RefreshDisks(); _timer.Start(); };
+            FormClosed += (_, _) => _timer.Stop();
+            _openDiskBtn.Click += (_, _) => OpenDiskForm();
+            _openSettingsBtn.Click += (_, _) => OpenSettingsForm();
         }
-        private void RefreshDashboard()
+        private void RefreshDisks()
         {
             try
             {
-                _cpuLabel.Text = $"CPU: {_monitor.GetCpuUsage():0.0}%";
-                (double used, double total) = _monitor.GetRamUsage();
-                _ramLabel.Text = $"RAM: {used:0.0} / {total:0.0} ГБ";
                 _diskList.Items.Clear();
-                foreach (var d in _monitor.GetDisks().Where(d => d.IsReady))
+                foreach (var d in DriveInfo.GetDrives().Where(d => d.IsReady))
                 {
                     double totalGb = d.TotalSize / 1024.0 / 1024.0 / 1024.0;
                     double freeGb = d.AvailableFreeSpace / 1024.0 / 1024.0 / 1024.0;
@@ -42,14 +58,22 @@ namespace PCResourceManager
                     var item = new ListViewItem(d.Name);
                     item.SubItems.Add(totalGb.ToString("0.0"));
                     item.SubItems.Add(freeGb.ToString("0.0"));
-                    item.SubItems.Add(usedPct.ToString("0.0"));
+                    item.SubItems.Add(usedPct.ToString("0.0") + " %");
+                    if (usedPct > 90) item.ForeColor = Color.Red;
                     _diskList.Items.Add(item);
                 }
             }
-            catch (Exception ex)
-            {
-                _cpuLabel.Text = $"Ошибка: {ex.Message}";
-            }
+            catch { }
+        }
+        private void OpenDiskForm()
+        {
+            var diskForm = new DiskForm(_scanner, _protection, _cleanup);
+            diskForm.ShowDialog(this);
+        }
+        private void OpenSettingsForm()
+        {
+            var settingsForm = new SettingsForm(_repo, _protection);
+            settingsForm.ShowDialog(this);
         }
     }
 }

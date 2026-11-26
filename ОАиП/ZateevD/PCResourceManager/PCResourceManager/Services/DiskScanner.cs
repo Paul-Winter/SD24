@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using PCResourceManager.Models;
@@ -19,6 +19,16 @@ namespace PCResourceManager.Services
             AttributesToSkip = FileAttributes.System | FileAttributes.ReparsePoint,
             MatchType = MatchType.Simple
         };
+        public List<(string Path, long Size)> GetHeaviestFolders(ScanResult result, int topCount = 20)
+        {
+            return result.Items
+                .GroupBy(f => Path.GetDirectoryName(f.FullPath))
+                .Where(g => g.Key != null)
+                .Select(g => (Path: g.Key!, Size: g.Sum(f => f.SizeBytes)))
+                .OrderByDescending(x => x.Size)
+                .Take(topCount)
+                .ToList();
+        }
         public Task<ScanResult> ScanAsync(string root, IProgress<int>? progress, CancellationToken ct)
             => Task.Run(() => Scan(root, progress, ct), ct);
         private ScanResult Scan(string root, IProgress<int>? progress, CancellationToken ct)

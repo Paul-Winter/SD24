@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             splitContainer1 = new SplitContainer();
+            GoToEditingButton = new Button();
             label1 = new Label();
             optionsPanel = new Panel();
             btnQueries = new Button();
@@ -45,10 +46,12 @@
             CollegeOffline = new Button();
             VUZOffline = new Button();
             AcademyOffline = new Button();
-            actionPanelForm1 = new RichTextBox();
+            NotChoosenType = new Label();
+            ResultsPanel = new FlowLayoutPanel();
+            SelectedResultLabel = new Label();
+            ChoosenType = new Label();
             SearchText = new TextBox();
             Search = new Button();
-            Form2TestButton = new Button();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -67,19 +70,34 @@
             // 
             // splitContainer1.Panel1
             // 
-            splitContainer1.Panel1.Controls.Add(Form2TestButton);
+            splitContainer1.Panel1.Controls.Add(GoToEditingButton);
             splitContainer1.Panel1.Controls.Add(label1);
             splitContainer1.Panel1.Controls.Add(optionsPanel);
             splitContainer1.Panel1.Controls.Add(OfflineOnline);
             // 
             // splitContainer1.Panel2
             // 
-            splitContainer1.Panel2.Controls.Add(actionPanelForm1);
+            splitContainer1.Panel2.Controls.Add(NotChoosenType);
+            splitContainer1.Panel2.Controls.Add(ResultsPanel);
+            splitContainer1.Panel2.Controls.Add(SelectedResultLabel);
+            splitContainer1.Panel2.Controls.Add(ChoosenType);
             splitContainer1.Panel2.Controls.Add(SearchText);
             splitContainer1.Panel2.Controls.Add(Search);
             splitContainer1.Size = new Size(800, 450);
             splitContainer1.SplitterDistance = 229;
             splitContainer1.TabIndex = 2;
+            // 
+            // GoToEditingButton
+            // 
+            GoToEditingButton.BackColor = SystemColors.ActiveCaption;
+            GoToEditingButton.Font = new Font("Segoe UI", 10F);
+            GoToEditingButton.Location = new Point(7, 408);
+            GoToEditingButton.Name = "GoToEditingButton";
+            GoToEditingButton.Size = new Size(212, 33);
+            GoToEditingButton.TabIndex = 3;
+            GoToEditingButton.Text = "Ввод данных";
+            GoToEditingButton.UseVisualStyleBackColor = false;
+            GoToEditingButton.Click += GoToEditingButton_Click;
             // 
             // label1
             // 
@@ -100,8 +118,9 @@
             optionsPanel.Controls.Add(btnDesc);
             optionsPanel.Location = new Point(7, 200);
             optionsPanel.Name = "optionsPanel";
-            optionsPanel.Size = new Size(215, 221);
+            optionsPanel.Size = new Size(215, 202);
             optionsPanel.TabIndex = 2;
+            optionsPanel.Paint += optionsPanel_Paint;
             // 
             // btnQueries
             // 
@@ -114,6 +133,7 @@
             btnQueries.Text = "Запросы";
             btnQueries.TextAlign = ContentAlignment.MiddleLeft;
             btnQueries.UseVisualStyleBackColor = true;
+            btnQueries.Click += QueriesButton_Click;
             // 
             // btnObjections
             // 
@@ -126,6 +146,7 @@
             btnObjections.Text = "Возражения";
             btnObjections.TextAlign = ContentAlignment.MiddleLeft;
             btnObjections.UseVisualStyleBackColor = true;
+            btnObjections.Click += ObjectionsButton_Click;
             // 
             // btnPrice
             // 
@@ -138,6 +159,7 @@
             btnPrice.Text = "Цены";
             btnPrice.TextAlign = ContentAlignment.MiddleLeft;
             btnPrice.UseVisualStyleBackColor = true;
+            btnPrice.Click += PriceButton_Click;
             // 
             // btnDesc
             // 
@@ -150,6 +172,7 @@
             btnDesc.Text = "Описание курса";
             btnDesc.TextAlign = ContentAlignment.MiddleLeft;
             btnDesc.UseVisualStyleBackColor = true;
+            btnDesc.Click += DescButton_Click;
             // 
             // OfflineOnline
             // 
@@ -160,6 +183,8 @@
             OfflineOnline.SelectedIndex = 0;
             OfflineOnline.Size = new Size(223, 179);
             OfflineOnline.TabIndex = 1;
+            OfflineOnline.SelectedIndexChanged += OfflineOnline_SelectedIndexChanged;
+            OfflineOnline.Click += OfflinePage_Click_1;
             // 
             // OnlinePage
             // 
@@ -174,7 +199,6 @@
             OnlinePage.TabIndex = 1;
             OnlinePage.Text = "Онлайн";
             OnlinePage.UseVisualStyleBackColor = true;
-            OnlinePage.Click += OnlinePage_Click;
             // 
             // CollegeOnline
             // 
@@ -187,6 +211,7 @@
             CollegeOnline.Text = "Колледж";
             CollegeOnline.TextAlign = ContentAlignment.MiddleLeft;
             CollegeOnline.UseVisualStyleBackColor = true;
+            CollegeOnline.Click += CollegeOnlineButton_Click;
             // 
             // VUZOnline
             // 
@@ -199,6 +224,7 @@
             VUZOnline.Text = "ВУЗ";
             VUZOnline.TextAlign = ContentAlignment.MiddleLeft;
             VUZOnline.UseVisualStyleBackColor = true;
+            VUZOnline.Click += VUZOnlineButton_Click;
             // 
             // AcademyOnline
             // 
@@ -211,6 +237,7 @@
             AcademyOnline.Text = "Академия";
             AcademyOnline.TextAlign = ContentAlignment.MiddleLeft;
             AcademyOnline.UseVisualStyleBackColor = true;
+            AcademyOnline.Click += AcademyOnlineButton_Click;
             // 
             // OfflinePage
             // 
@@ -225,7 +252,6 @@
             OfflinePage.TabIndex = 0;
             OfflinePage.Text = "Оффлайн";
             OfflinePage.UseVisualStyleBackColor = true;
-            OfflinePage.Click += OfflinePage_Click_1;
             // 
             // SchoolOffline
             // 
@@ -238,6 +264,7 @@
             SchoolOffline.Text = "Школа";
             SchoolOffline.TextAlign = ContentAlignment.MiddleLeft;
             SchoolOffline.UseVisualStyleBackColor = true;
+            SchoolOffline.Click += SchoolOfflineButton_Click;
             // 
             // CollegeOffline
             // 
@@ -250,6 +277,7 @@
             CollegeOffline.Text = "Колледж";
             CollegeOffline.TextAlign = ContentAlignment.MiddleLeft;
             CollegeOffline.UseVisualStyleBackColor = true;
+            CollegeOffline.Click += CollegeOfflineButton_Click;
             // 
             // VUZOffline
             // 
@@ -262,6 +290,7 @@
             VUZOffline.Text = "ВУЗ";
             VUZOffline.TextAlign = ContentAlignment.MiddleLeft;
             VUZOffline.UseVisualStyleBackColor = true;
+            VUZOffline.Click += VUZOfflineButton_Click;
             // 
             // AcademyOffline
             // 
@@ -274,15 +303,46 @@
             AcademyOffline.Text = "Академия";
             AcademyOffline.TextAlign = ContentAlignment.MiddleLeft;
             AcademyOffline.UseVisualStyleBackColor = true;
+            AcademyOffline.Click += AcademyOfflineButton_Click;
             // 
-            // actionPanelForm1
+            // NotChoosenType
             // 
-            actionPanelForm1.BorderStyle = BorderStyle.None;
-            actionPanelForm1.Location = new Point(3, 37);
-            actionPanelForm1.Name = "actionPanelForm1";
-            actionPanelForm1.Size = new Size(552, 384);
-            actionPanelForm1.TabIndex = 2;
-            actionPanelForm1.Text = "";
+            NotChoosenType.AutoSize = true;
+            NotChoosenType.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            NotChoosenType.Location = new Point(13, 41);
+            NotChoosenType.Name = "NotChoosenType";
+            NotChoosenType.Size = new Size(232, 15);
+            NotChoosenType.TabIndex = 5;
+            NotChoosenType.Text = "Выберите тип и уровень образования.";
+            NotChoosenType.Click += NotChoosenType_Click;
+            // 
+            // ResultsPanel
+            // 
+            ResultsPanel.AutoScroll = true;
+            ResultsPanel.Location = new Point(13, 60);
+            ResultsPanel.Name = "ResultsPanel";
+            ResultsPanel.Size = new Size(542, 361);
+            ResultsPanel.TabIndex = 7;
+            // 
+            // SelectedResultLabel
+            // 
+            SelectedResultLabel.AutoSize = true;
+            SelectedResultLabel.Location = new Point(74, 41);
+            SelectedResultLabel.Name = "SelectedResultLabel";
+            SelectedResultLabel.Size = new Size(0, 15);
+            SelectedResultLabel.TabIndex = 6;
+            SelectedResultLabel.Visible = false;
+            // 
+            // ChoosenType
+            // 
+            ChoosenType.AutoSize = true;
+            ChoosenType.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            ChoosenType.Location = new Point(13, 41);
+            ChoosenType.Name = "ChoosenType";
+            ChoosenType.Size = new Size(65, 15);
+            ChoosenType.TabIndex = 4;
+            ChoosenType.Text = "Выбрано: ";
+            ChoosenType.Click += ChoosenType_Click;
             // 
             // SearchText
             // 
@@ -290,6 +350,7 @@
             SearchText.Name = "SearchText";
             SearchText.Size = new Size(418, 23);
             SearchText.TabIndex = 1;
+            SearchText.TextChanged += SearchTextButton_TextChanged;
             // 
             // Search
             // 
@@ -299,17 +360,7 @@
             Search.TabIndex = 0;
             Search.Text = "🔍 Поиск";
             Search.UseVisualStyleBackColor = true;
-            Search.Click += button2_Click_1;
-            // 
-            // Form2TestButton
-            // 
-            Form2TestButton.Location = new Point(7, 424);
-            Form2TestButton.Name = "Form2TestButton";
-            Form2TestButton.Size = new Size(134, 23);
-            Form2TestButton.TabIndex = 3;
-            Form2TestButton.Text = "форма заполнения";
-            Form2TestButton.UseVisualStyleBackColor = true;
-            Form2TestButton.Click += Form2TestButton_Click;
+            Search.Click += SearchButton_Click;
             // 
             // Form1
             // 
@@ -319,6 +370,7 @@
             Controls.Add(splitContainer1);
             Name = "Form1";
             Text = "Form1";
+            Load += Form1_Load;
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel1.PerformLayout();
             splitContainer1.Panel2.ResumeLayout(false);
@@ -353,7 +405,10 @@
         private Button btnPrice;
         private Button btnDesc;
         private Label label1;
-        private RichTextBox actionPanelForm1;
-        private Button Form2TestButton;
+        private Label ChoosenType;
+        private Label NotChoosenType;
+        private Label SelectedResultLabel;
+        private FlowLayoutPanel ResultsPanel;
+        private Button GoToEditingButton;
     }
 }

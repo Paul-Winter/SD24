@@ -1,4 +1,4 @@
-﻿using PCResourceManager.Models;
+using PCResourceManager.Models;
 using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
