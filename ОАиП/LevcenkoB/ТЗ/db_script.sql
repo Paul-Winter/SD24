@@ -1,4 +1,4 @@
-CREATE DATABASE schedule_db;
+CREATE DATABASE schedule_db WITH ENCODING 'UTF8' TEMPLATE template0;
 \c schedule_db;
 
 DROP TABLE IF EXISTS grades CASCADE;
