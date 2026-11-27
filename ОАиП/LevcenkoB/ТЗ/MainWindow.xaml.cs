@@ -18,6 +18,7 @@ namespace TeacherScheduleApp
         private void btnLoadData_Click(object sender, RoutedEventArgs e)
         {
             LoadData();
+            LoadAssessments();
         }
 
         private void LoadData()
@@ -30,15 +31,13 @@ namespace TeacherScheduleApp
                     string sql = @"
                         SELECT 
                             s.id AS ""ID"", 
-                            t.id AS ""TeacherID"",
                             t.full_name AS ""Преподаватель"", 
                             sub.name AS ""Предмет"",
+                            s.lesson_type AS ""Тип"",
                             g.name AS ""Группа"",
-                            s.auditorium_number AS ""Аудитория"", 
                             s.lesson_date AS ""Дата"",
                             TO_CHAR(s.start_time, 'HH24:MI') || ' - ' || TO_CHAR(s.end_time, 'HH24:MI') AS ""Время"",
-                            s.status AS ""Статус"", 
-                            s.hours_count AS ""Часы""
+                            s.status AS ""Статус""
                         FROM schedule s
                         JOIN teachers t ON s.teacher_id = t.id
                         JOIN subjects sub ON s.subject_id = sub.id
@@ -57,10 +56,55 @@ namespace TeacherScheduleApp
             }
         }
 
-        private void btnOpenTeachers_Click(object sender, RoutedEventArgs e)
+        private void LoadAssessments()
         {
-            TeachersListWindow listWindow = new TeachersListWindow();
-            listWindow.ShowDialog();
+            try
+            {
+                using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string sql = @"
+                        SELECT 
+                            s.lesson_date AS ""Дата"",
+                            g.name AS ""Группа"",
+                            sub.name AS ""Дисциплина"",
+                            sub.assessment_type AS ""Тип""
+                        FROM schedule s
+                        JOIN groups g ON s.group_id = g.id
+                        JOIN subjects sub ON s.subject_id = sub.id
+                        WHERE sub.assessment_type IN ('Зачёт', 'Экзамен')
+                        ORDER BY s.lesson_date;";
+
+                    NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(sql, conn);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+                    AssessmentsDataGrid.ItemsSource = dt.DefaultView;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при загрузке зачётов: " + ex.Message);
+            }
+        }
+
+        private void btnRowDone_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn != null && btn.Tag != null)
+            {
+                int scheduleId = Convert.ToInt32(btn.Tag);
+                ChangeStatus(scheduleId, "проведено");
+            }
+        }
+
+        private void btnRowCancel_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn != null && btn.Tag != null)
+            {
+                int scheduleId = Convert.ToInt32(btn.Tag);
+                ChangeStatus(scheduleId, "отменено");
+            }
         }
 
         private void btnMarkAll_Click(object sender, RoutedEventArgs e)
@@ -73,40 +117,6 @@ namespace TeacherScheduleApp
             ChangeAllStatus("отменено");
         }
 
-        private void btnRowInfo_Click(object sender, RoutedEventArgs e)
-        {
-            Button btn = sender as Button;
-            DataRowView row = btn.DataContext as DataRowView;
-            if (row != null)
-            {
-                int teacherId = Convert.ToInt32(row["TeacherID"]);
-                TeacherWindow infoWindow = new TeacherWindow(teacherId);
-                infoWindow.ShowDialog();
-            }
-        }
-
-        private void btnRowDone_Click(object sender, RoutedEventArgs e)
-        {
-            Button btn = sender as Button;
-            DataRowView row = btn.DataContext as DataRowView;
-            if (row != null)
-            {
-                int scheduleId = Convert.ToInt32(row["ID"]);
-                ChangeStatus(scheduleId, "проведено");
-            }
-        }
-
-        private void btnRowCancel_Click(object sender, RoutedEventArgs e)
-        {
-            Button btn = sender as Button;
-            DataRowView row = btn.DataContext as DataRowView;
-            if (row != null)
-            {
-                int scheduleId = Convert.ToInt32(row["ID"]);
-                ChangeStatus(scheduleId, "отменено");
-            }
-        }
-
         private void ChangeStatus(int id, string newStatus)
         {
             try
@@ -114,8 +124,7 @@ namespace TeacherScheduleApp
                 using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
                 {
                     conn.Open();
-                    string sql = "UPDATE schedule SET status = @status WHERE id = @id";
-                    using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
+                    using (NpgsqlCommand cmd = new NpgsqlCommand("UPDATE schedule SET status = @status WHERE id = @id", conn))
                     {
                         cmd.Parameters.AddWithValue("status", newStatus);
                         cmd.Parameters.AddWithValue("id", id);
@@ -124,10 +133,7 @@ namespace TeacherScheduleApp
                 }
                 LoadData();
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Ошибка при обновлении: " + ex.Message);
-            }
+            catch (Exception ex) { MessageBox.Show("Ошибка: " + ex.Message); }
         }
 
         private void ChangeAllStatus(string newStatus)
@@ -139,8 +145,7 @@ namespace TeacherScheduleApp
                     using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
                     {
                         conn.Open();
-                        string sql = "UPDATE schedule SET status = @status";
-                        using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
+                        using (NpgsqlCommand cmd = new NpgsqlCommand("UPDATE schedule SET status = @status", conn))
                         {
                             cmd.Parameters.AddWithValue("status", newStatus);
                             cmd.ExecuteNonQuery();
@@ -148,11 +153,27 @@ namespace TeacherScheduleApp
                     }
                     LoadData();
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Ошибка при массовом обновлении: " + ex.Message);
-                }
+                catch (Exception ex) { MessageBox.Show("Ошибка: " + ex.Message); }
             }
+        }
+
+        private void btnAddTeacher_Click(object sender, RoutedEventArgs e)
+        {
+            TeacherEditWindow editWindow = new TeacherEditWindow(0);
+            editWindow.ShowDialog();
+            LoadData();
+        }
+
+        private void btnOpenTeachers_Click(object sender, RoutedEventArgs e)
+        {
+            TeachersListWindow listWindow = new TeachersListWindow();
+            listWindow.ShowDialog();
+        }
+
+        private void btnOpenGroups_Click(object sender, RoutedEventArgs e)
+        {
+            GroupsWindow groupsWindow = new GroupsWindow();
+            groupsWindow.ShowDialog();
         }
 
         private void btnLoadWorkload_Click(object sender, RoutedEventArgs e)
@@ -166,13 +187,11 @@ namespace TeacherScheduleApp
                         SELECT 
                             t.full_name AS ""Преподаватель"",
                             COUNT(s.id) AS ""Всего пар"",
-                            COALESCE(SUM(s.hours_count), 0) AS ""Всего часов"",
-                            COUNT(CASE WHEN s.status = 'проведено' THEN 1 END) AS ""Проведено пар"",
-                            COALESCE(SUM(CASE WHEN s.status = 'проведено' THEN s.hours_count ELSE 0 END), 0) AS ""Отработано часов""
+                            COALESCE(SUM(s.hours_count), 0) AS ""Всего часов""
                         FROM teachers t
                         LEFT JOIN schedule s ON t.id = s.teacher_id
                         GROUP BY t.id, t.full_name
-                        ORDER BY ""Отработано часов"" DESC;";
+                        ORDER BY ""Всего часов"" DESC;";
 
                     NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(sql, conn);
                     DataTable dt = new DataTable();
@@ -180,10 +199,7 @@ namespace TeacherScheduleApp
                     WorkloadDataGrid.ItemsSource = dt.DefaultView;
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Ошибка при загрузке загруженности: " + ex.Message);
-            }
+            catch (Exception ex) { MessageBox.Show("Ошибка: " + ex.Message); }
         }
     }
 }

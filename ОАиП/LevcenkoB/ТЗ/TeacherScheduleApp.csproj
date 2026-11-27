@@ -86,12 +86,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="GroupsWindow.xaml.cs">
+      <DependentUpon>GroupsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TeacherEditWindow.xaml.cs">
+      <DependentUpon>TeacherEditWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TeachersListWindow.xaml.cs">
       <DependentUpon>TeachersListWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="TeacherWindow.xaml.cs">
       <DependentUpon>TeacherWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="GroupsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -104,6 +114,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="TeacherEditWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="TeachersListWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
