@@ -30,8 +30,10 @@ namespace TeacherScheduleApp
                     string sql = @"
                         SELECT 
                             s.id AS ""ID"", 
+                            t.id AS ""TeacherID"",
                             t.full_name AS ""Преподаватель"", 
-                            sub.name AS ""Предмет"", 
+                            sub.name AS ""Предмет"",
+                            g.name AS ""Группа"",
                             s.auditorium_number AS ""Аудитория"", 
                             s.lesson_date AS ""Дата"",
                             TO_CHAR(s.start_time, 'HH24:MI') || ' - ' || TO_CHAR(s.end_time, 'HH24:MI') AS ""Время"",
@@ -40,6 +42,7 @@ namespace TeacherScheduleApp
                         FROM schedule s
                         JOIN teachers t ON s.teacher_id = t.id
                         JOIN subjects sub ON s.subject_id = sub.id
+                        JOIN groups g ON s.group_id = g.id
                         ORDER BY s.lesson_date, s.start_time;";
 
                     NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(sql, conn);
@@ -54,6 +57,12 @@ namespace TeacherScheduleApp
             }
         }
 
+        private void btnOpenTeachers_Click(object sender, RoutedEventArgs e)
+        {
+            TeachersListWindow listWindow = new TeachersListWindow();
+            listWindow.ShowDialog();
+        }
+
         private void btnMarkAll_Click(object sender, RoutedEventArgs e)
         {
             ChangeAllStatus("проведено");
@@ -62,6 +71,18 @@ namespace TeacherScheduleApp
         private void btnCancelAll_Click(object sender, RoutedEventArgs e)
         {
             ChangeAllStatus("отменено");
+        }
+
+        private void btnRowInfo_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+            DataRowView row = btn.DataContext as DataRowView;
+            if (row != null)
+            {
+                int teacherId = Convert.ToInt32(row["TeacherID"]);
+                TeacherWindow infoWindow = new TeacherWindow(teacherId);
+                infoWindow.ShowDialog();
+            }
         }
 
         private void btnRowDone_Click(object sender, RoutedEventArgs e)
