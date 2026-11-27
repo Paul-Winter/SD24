@@ -13,6 +13,9 @@ namespace IDE_Booster
         private Button launchButton = null!;
         private Label nameLabel = null!;
         private Label pathLabel = null!;
+        private Button boostButton = null!;
+        private Button stopButton = null!;
+        private Label statusLabel = null!;
         /// <summary>
         ///  Clean up any resources being used.
         /// </summary>
@@ -38,6 +41,9 @@ namespace IDE_Booster
             launchButton = new Button();
             nameLabel = new Label();
             pathLabel = new Label();
+            boostButton = new Button();
+            stopButton = new Button();
+            statusLabel = new Label();
 
             SuspendLayout();
 
@@ -76,6 +82,30 @@ namespace IDE_Booster
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "IDE Booster";
+
+            // boostButton
+            boostButton.Location = new Point(30, 190);
+            boostButton.Size = new Size(150, 40);
+            boostButton.Text = "Запустить буст";
+            boostButton.UseVisualStyleBackColor = true;
+            boostButton.Click += boostButton_Click;
+
+            // stopButton
+            stopButton.Location = new Point(200, 190);
+            stopButton.Size = new Size(150, 40);
+            stopButton.Text = "Остановить буст";
+            stopButton.UseVisualStyleBackColor = true;
+            stopButton.Click += stopButton_Click;
+
+            // statusLabel
+            statusLabel.AutoSize = true;
+            statusLabel.Location = new Point(30, 250);
+            statusLabel.Text = "Статус: ожидание";
+
+            // Добавляем элементы
+            Controls.Add(boostButton);
+            Controls.Add(stopButton);
+            Controls.Add(statusLabel);
 
             ResumeLayout(false);
             PerformLayout();
