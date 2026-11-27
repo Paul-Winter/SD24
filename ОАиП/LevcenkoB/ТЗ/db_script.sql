@@ -1,5 +1,5 @@
 -- Создание базы данных и подключение к ней
-CREATE DATABASE schedule_db;
+CREATE DATABASE schedule_db WITH ENCODING 'UTF8' TEMPLATE template0;
 \c schedule_db;
 
 -- Удаление старых таблиц, если они были (чтобы скрипт можно было запускать повторно)
